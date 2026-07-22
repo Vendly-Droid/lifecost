@@ -1,0 +1,1399 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LifeCost – Große Entscheidungen klar gerechnet</title><style>
+:root{
+  --bg:#f3f6fa;--card:#fff;--ink:#172433;--muted:#6b7785;--line:#dbe2ea;
+  --nav:#172433;--green:#e6f6ec;--greenText:#176b45;--red:#fde9e6;--redText:#a12d24;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#f8fafc,#eef3f8);color:var(--ink)}
+header{background:#fff;border-bottom:1px solid var(--line);padding:20px 5vw;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:13px;background:var(--nav);color:#fff;display:grid;place-items:center;font-weight:900;font-size:22px}
+h1{margin:0;font-size:24px}.sub{color:var(--muted);font-size:13px;margin-top:3px}
+main{max-width:1180px;margin:24px auto;padding:0 16px 50px}
+.actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-bottom:14px}
+button{border:0;border-radius:10px;padding:11px 15px;background:var(--nav);color:#fff;font-weight:700;cursor:pointer}
+button.secondary{background:#667585}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 8px 28px rgba(20,35,50,.05)}
+.car-head{display:flex;gap:12px;align-items:center;margin-bottom:16px}.car-icon{font-size:28px}.car-head input{font-size:18px;font-weight:700}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;font-size:14px}
+input:focus{outline:none;border-color:#91a4b8;box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.extra{display:none;margin-top:12px}.extra.open{display:grid}
+.toggle{width:100%;margin-top:12px;background:#667585}
+.hero{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;text-align:center;box-shadow:0 8px 28px rgba(20,35,50,.05)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.hero-box{padding:16px;border-radius:13px;background:#f8fafc}.hero-box .big{font-size:32px;font-weight:900;letter-spacing:-1px;margin:5px 0}
+.saving{margin-top:14px;padding:14px;border-radius:12px;background:#eef8f1;font-weight:800;color:#176b45}
+.warning{background:#fff7df;color:#7a5b00}
+.stats{margin-top:16px}.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{padding:14px;border:1px solid var(--line);border-radius:12px;background:#fbfcfe}.stat small{color:var(--muted)}.stat b{display:block;font-size:18px;margin-top:5px}
+.compare{margin-top:16px;display:none}.compare.open{display:block}
+table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:right}th:first-child,td:first-child{text-align:left}
+.cheaper{background:var(--green);color:var(--greenText);font-weight:800}.expensive{background:var(--red);color:var(--redText);font-weight:800}.equal{background:#eef1f4;font-weight:700}
+.note{font-size:12px;color:var(--muted);margin-top:12px}
+@media(max-width:850px){.grid,.hero-grid,.stats-grid,.fields{grid-template-columns:1fr}}
+@media print{.actions,.toggle,#detailsBtn{display:none!important}body{background:#fff}.card,.hero{box-shadow:none}}
+
+.cost-chart{display:grid;gap:16px;margin-top:16px}
+.chart-row{display:grid;grid-template-columns:180px 1fr;gap:14px;align-items:center}
+.chart-label{font-size:13px;font-weight:700}
+.chart-bars{display:grid;gap:7px}
+.chart-line{display:grid;grid-template-columns:90px 1fr 100px;gap:9px;align-items:center}
+.chart-name{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-track{height:24px;background:#edf1f5;border-radius:999px;overflow:hidden}
+.chart-fill{height:100%;border-radius:999px;min-width:2px}
+.chart-fill.cheaper-bar{background:#38a169}
+.chart-fill.expensive-bar{background:#d95a4e}
+.chart-fill.equal-bar{background:#94a3b8}
+.chart-value{text-align:right;font-size:12px;font-weight:800}
+@media(max-width:700px){.chart-row{grid-template-columns:1fr}.chart-line{grid-template-columns:75px 1fr 85px}}
+
+:root{
+  --bg:#f4f7fb;
+  --card:#ffffff;
+  --ink:#1f2937;
+  --muted:#6f7b8a;
+  --line:#e4e9f0;
+  --nav:#243447;
+  --soft:#f8fafc;
+  --accent:#5b7cfa;
+  --accentSoft:#eef2ff;
+  --green:#e9f8ef;
+  --greenText:#1e7a4a;
+  --red:#fff0ee;
+  --redText:#b23a30;
+}
+body{
+  background:
+    radial-gradient(circle at top left, rgba(91,124,250,.08), transparent 28%),
+    linear-gradient(180deg,#f9fbfd,#f2f5f9);
+}
+header{
+  background:rgba(255,255,255,.94);
+  box-shadow:0 8px 28px rgba(23,34,51,.06);
+  border-bottom:none;
+}
+.brand .logo{
+  background:linear-gradient(135deg,#243447,#5b7cfa);
+  box-shadow:0 8px 18px rgba(91,124,250,.22);
+}
+.card,.hero{
+  border:none;
+  box-shadow:0 10px 35px rgba(23,34,51,.07);
+}
+.card{
+  border-radius:20px;
+}
+.car-head{
+  padding-bottom:14px;
+  border-bottom:1px solid var(--line);
+}
+.car-head input{
+  background:#fff;
+  border:1px solid #dfe5ec;
+}
+input{
+  background:#f9fbfd;
+  border:1px solid #dfe5ec;
+}
+input::placeholder{
+  color:#a6b0bc;
+}
+button{
+  background:linear-gradient(135deg,#243447,#334b65);
+  box-shadow:0 6px 14px rgba(36,52,71,.12);
+}
+button:hover{
+  transform:translateY(-1px);
+}
+button.secondary{
+  background:#eef2f6;
+  color:#39495a;
+  box-shadow:none;
+}
+.toggle{
+  background:#f0f3f7;
+  color:#445465;
+  box-shadow:none;
+}
+.hero{
+  background:linear-gradient(135deg,#ffffff,#f7f9ff);
+}
+.hero-box{
+  background:#fff;
+  border:1px solid #e7ebf2;
+  box-shadow:0 6px 18px rgba(23,34,51,.04);
+}
+.saving{
+  background:linear-gradient(135deg,#edf9f2,#f7fcf9);
+  border:1px solid #d9f1e3;
+}
+.warning{
+  background:#fff8e8;
+  color:#7b5c00;
+  border:1px solid #f4e5b7;
+}
+.stats{
+  background:linear-gradient(180deg,#fff,#fbfcfe);
+}
+.stat{
+  background:#fff;
+  border:1px solid #e7ebf2;
+  box-shadow:0 4px 14px rgba(23,34,51,.035);
+}
+.cost-chart{
+  padding-top:6px;
+}
+.chart-row{
+  padding:12px;
+  border:1px solid #e7ebf2;
+  border-radius:14px;
+  background:#fbfcfe;
+}
+.chart-track{
+  background:#edf1f5;
+  height:18px;
+}
+.chart-fill.cheaper-bar{
+  background:linear-gradient(90deg,#56b77e,#35a76a);
+}
+.chart-fill.expensive-bar{
+  background:linear-gradient(90deg,#ea7b70,#d95a4e);
+}
+.compare table{
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid #e7ebf2;
+}
+.compare thead{
+  background:#f7f9fc;
+}
+.module-strip{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.module-pill{
+  padding:8px 11px;
+  border-radius:999px;
+  background:#f1f4f7;
+  color:#6d7987;
+  font-size:12px;
+  font-weight:600;
+}
+.module-pill.active{
+  background:var(--accentSoft);
+  color:#405ad8;
+}
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:14px;
+}
+.section-title .icon{
+  width:30px;
+  height:30px;
+  border-radius:10px;
+  background:#f1f4f8;
+  display:grid;
+  place-items:center;
+}
+@media(max-width:850px){
+  header{align-items:flex-start;flex-direction:column}
+}
+
+.welcome{position:relative;overflow:hidden;background:linear-gradient(135deg,#172433 0%,#2c4968 65%,#5273e8 140%);color:#fff;border-radius:26px;padding:38px 40px;margin-bottom:22px;box-shadow:0 18px 45px rgba(23,36,51,.15)}
+.welcome:after{content:"€";position:absolute;right:30px;top:-40px;font-size:190px;font-weight:900;opacity:.045;transform:rotate(10deg)}
+.welcome .eyebrow{font-size:11px;font-weight:900;letter-spacing:1.8px;opacity:.72}
+.welcome h2{font-size:32px;line-height:1.12;max-width:650px;margin:10px 0 10px;letter-spacing:-.7px}
+.welcome p{max-width:680px;color:rgba(255,255,255,.78);line-height:1.55;margin:0}
+.steps{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.steps span{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);padding:9px 13px;border-radius:999px;font-size:12px}.steps b{display:grid;place-items:center;width:21px;height:21px;background:#fff;color:#243447;border-radius:50%}
+.step-heading{display:flex;align-items:center;gap:11px;margin:22px 0 12px}.step-heading>span{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#243447;color:#fff;font-weight:900}.step-heading b{display:block;font-size:18px}.step-heading small{display:block;color:var(--muted);margin-top:2px}
+.result-step{margin-top:26px}.inside-step{margin-top:0;margin-bottom:18px}
+.grid>.card{position:relative;transition:transform .18s ease,box-shadow .18s ease}.grid>.card:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(23,34,51,.09)}
+.car-icon{width:48px;height:48px;display:grid;place-items:center;background:#f1f5f9;border-radius:15px}
+.actions{background:#fff;padding:10px;border-radius:14px;box-shadow:0 5px 20px rgba(23,34,51,.05);margin-bottom:16px}
+.actions button:first-child{background:linear-gradient(135deg,#4f6fe8,#6b86f5)}
+.hero{padding:28px}.hero-box .big{font-size:38px}.saving{font-size:17px;padding:17px}
+.stats-grid .stat b{font-size:21px}
+#detailsBtn{background:#fff!important;color:#39495a!important;border:1px solid var(--line);box-shadow:none!important}
+@media(max-width:700px){.welcome{padding:28px 22px}.welcome h2{font-size:27px}.steps{display:grid}.hero-box .big{font-size:31px}}
+
+:root{
+  --bg:#0e141b;
+  --card:#151d26;
+  --card2:#111820;
+  --ink:#eef4f8;
+  --muted:#8fa0af;
+  --line:#27333f;
+  --nav:#0b1016;
+  --accent:#4f7cff;
+  --accentSoft:#1c2b50;
+  --green:#1fce88;
+  --greenSoft:#112a22;
+  --red:#ff6b61;
+  --redSoft:#351c1c;
+}
+body{
+  background:
+    radial-gradient(circle at 20% -10%, rgba(79,124,255,.16), transparent 35%),
+    radial-gradient(circle at 100% 10%, rgba(31,206,136,.08), transparent 30%),
+    var(--bg);
+  color:var(--ink);
+}
+header{
+  background:rgba(11,16,22,.95);
+  color:var(--ink);
+  border-bottom:1px solid #1d2731;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+  backdrop-filter:blur(12px);
+}
+.brand .logo{
+  background:linear-gradient(135deg,#4f7cff,#7d9bff);
+  box-shadow:0 10px 22px rgba(79,124,255,.28);
+}
+.sub{color:var(--muted)}
+main{max-width:1220px}
+.welcome{
+  background:linear-gradient(135deg,#121a24 0%,#172231 60%,#172742 100%);
+  border:1px solid #263545;
+  box-shadow:0 18px 48px rgba(0,0,0,.22);
+}
+.welcome h2{color:#fff}
+.welcome p{color:#aebbc7}
+.steps span{background:#1b2734;border:1px solid #2b3948}
+.steps b{background:#4f7cff;color:#fff}
+.card,.hero{
+  background:linear-gradient(180deg,#151d26,#121920);
+  border:1px solid var(--line);
+  box-shadow:0 12px 34px rgba(0,0,0,.16);
+}
+.grid>.card:hover{box-shadow:0 18px 42px rgba(0,0,0,.22)}
+.car-head{border-bottom:1px solid #26313c}
+.car-icon{background:#1b2530}
+label{color:#9aa9b7}
+input{
+  color:#eef4f8;
+  background:#0f161d;
+  border:1px solid #2a3642;
+}
+input::placeholder{color:#667786}
+input:focus{
+  border-color:#4f7cff;
+  background:#101821;
+  box-shadow:0 0 0 3px rgba(79,124,255,.12);
+}
+.actions{
+  background:#111820;
+  box-shadow:0 8px 24px rgba(0,0,0,.16);
+  border:1px solid #232f3a;
+}
+button{
+  background:linear-gradient(135deg,#4f7cff,#6f8eff);
+  box-shadow:0 8px 18px rgba(79,124,255,.18);
+}
+button.secondary,.toggle,#detailsBtn{
+  background:#1a2430!important;
+  color:#c8d3dc!important;
+  border:1px solid #2b3743;
+}
+.step-heading>span{background:#4f7cff}
+.step-heading small{color:var(--muted)}
+.hero{
+  background:linear-gradient(135deg,#151e28,#10171f);
+}
+.hero-box{
+  background:#0f161d;
+  border:1px solid #27343f;
+  box-shadow:none;
+}
+.hero-box .big{color:#fff}
+.saving{
+  background:linear-gradient(135deg,#10281f,#123326);
+  border:1px solid #1d5a3d;
+  color:#8ff0bd;
+}
+.warning{
+  background:#2a2413;
+  color:#e8ca72;
+  border:1px solid #55491e;
+}
+.stat{
+  background:#0f161d;
+  border:1px solid #27333f;
+  box-shadow:none;
+}
+.stat small{color:#8595a3}
+.stat b{color:#fff}
+.chart-row{
+  background:#0f161d;
+  border:1px solid #27333f;
+}
+.chart-label{color:#dce5ec}
+.chart-name{color:#7f909f}
+.chart-track{background:#202a34}
+.chart-fill.cheaper-bar{background:linear-gradient(90deg,#1aa66d,#2bd691)}
+.chart-fill.expensive-bar{background:linear-gradient(90deg,#d6534b,#ff756b)}
+.chart-value{color:#eaf1f6}
+.compare table{border:1px solid #27333f}
+.compare thead{background:#10171f}
+th,td{border-bottom:1px solid #26313c}
+td.cheaper{background:#112a22!important;color:#74e7ab}
+td.expensive{background:#351c1c!important;color:#ff9b93}
+td.equal{background:#202831!important;color:#c3ced7}
+.module-pill{
+  background:#161f28;
+  color:#7f909f;
+  border:1px solid #26323e;
+}
+.module-pill.active{
+  background:#1c2b50;
+  color:#9ab0ff;
+  border-color:#334a7a;
+}
+.section-title .icon{background:#1a2430}
+.market-strip{
+  display:grid;
+  grid-template-columns:1.1fr .9fr .9fr;
+  gap:12px;
+  margin:14px 0 18px;
+}
+.market-card{
+  background:linear-gradient(180deg,#151d26,#111820);
+  border:1px solid #27333f;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 10px 28px rgba(0,0,0,.14);
+}
+.market-card small{color:#7f909f;display:block}
+.market-card .value{font-size:28px;font-weight:900;margin-top:6px;letter-spacing:-.5px}
+.market-card .delta{font-size:13px;font-weight:800;margin-top:4px}
+.delta.good{color:#46dd9b}.delta.bad{color:#ff8178}
+.ticker{
+  display:flex;gap:12px;overflow:auto;padding:8px 0 2px;margin-bottom:8px
+}
+.ticker span{
+  background:#121920;border:1px solid #25313d;border-radius:999px;padding:7px 10px;
+  white-space:nowrap;font-size:11px;color:#90a0ae
+}
+.ticker b{color:#dce6ee;margin-left:5px}
+@media(max-width:800px){.market-strip{grid-template-columns:1fr}}
+
+:root{
+  --bg:#eef3f8;
+  --card:#ffffff;
+  --card2:#f7f9fc;
+  --ink:#172433;
+  --muted:#6e7d8c;
+  --line:#dfe6ee;
+  --nav:#ffffff;
+  --accent:#4169e1;
+  --accentSoft:#edf2ff;
+  --green:#19a96f;
+  --greenSoft:#eaf8f1;
+  --red:#dc5b52;
+  --redSoft:#fff0ee;
+}
+body{
+  background:
+    radial-gradient(circle at 15% -5%,rgba(65,105,225,.12),transparent 30%),
+    linear-gradient(180deg,#f8fafc,#edf2f7);
+  color:var(--ink);
+}
+header{
+  background:rgba(255,255,255,.94);
+  color:var(--ink);
+  border-bottom:1px solid #e1e7ee;
+  box-shadow:0 8px 26px rgba(30,50,70,.06);
+}
+.sub{color:var(--muted)}
+.welcome{
+  background:linear-gradient(135deg,#ffffff 0%,#f5f8ff 58%,#edf3ff 100%);
+  color:var(--ink);
+  border:1px solid #dce5f2;
+  box-shadow:0 16px 40px rgba(31,50,70,.08);
+}
+.welcome h2{color:#172433}
+.welcome p{color:#667789}
+.welcome .eyebrow{color:#4b69c9;opacity:1}
+.steps span{background:#fff;border:1px solid #dfe6ee;color:#526171}
+.steps b{background:#4169e1;color:#fff}
+.card,.hero{
+  background:linear-gradient(180deg,#fff,#fbfcfe);
+  border:1px solid #e0e6ed;
+  box-shadow:0 10px 32px rgba(30,50,70,.065);
+}
+.car-head{border-bottom:1px solid #e3e8ee}
+.car-icon{background:#f0f4f9}
+label{color:#718090}
+input{
+  color:#172433;
+  background:#f8fafc;
+  border:1px solid #dce3ea;
+}
+input::placeholder{color:#a1acb7}
+input:focus{background:#fff;border-color:#6f8ce8}
+.actions{
+  background:#fff;
+  border:1px solid #e0e6ed;
+  box-shadow:0 7px 22px rgba(30,50,70,.055);
+}
+button.secondary,.toggle,#detailsBtn{
+  background:#f0f3f7!important;
+  color:#46576a!important;
+  border:1px solid #dce3ea;
+}
+.hero{background:linear-gradient(135deg,#fff,#f6f9ff)}
+.hero-box{background:#fff;border:1px solid #e0e6ed}
+.hero-box .big{color:#172433}
+.saving{
+  background:linear-gradient(135deg,#eaf8f1,#f3fbf7);
+  border:1px solid #cfeedd;
+  color:#18744d;
+}
+.warning{background:#fff8e7;color:#806000;border:1px solid #f0e1ad}
+.stat{background:#fff;border:1px solid #e0e6ed}
+.stat small{color:#788796}.stat b{color:#172433}
+.chart-row{background:#fafbfd;border:1px solid #e0e6ed}
+.chart-label{color:#26384a}.chart-name{color:#7a8997}
+.chart-track{background:#e8edf2}.chart-value{color:#243649}
+.compare table{border:1px solid #e0e6ed}.compare thead{background:#f5f7fa}
+th,td{border-bottom:1px solid #e3e8ee}
+td.cheaper{background:#eaf8f1!important;color:#18744d}
+td.expensive{background:#fff0ee!important;color:#a43b34}
+td.equal{background:#eef2f5!important;color:#53616e}
+.module-pill{
+  background:#f3f5f8;color:#758392;border:1px solid #e0e5eb
+}
+.module-pill.active{
+  background:#edf2ff;color:#4161c4;border-color:#d6e0ff
+}
+.section-title .icon{background:#f0f3f7}
+.market-card{
+  background:linear-gradient(180deg,#fff,#f8fafc);
+  border:1px solid #dfe6ee;
+  box-shadow:0 9px 28px rgba(30,50,70,.065);
+}
+.market-card small{color:#778695}
+.market-card .value{color:#172433}
+.delta.good{color:#168c5d}.delta.bad{color:#c84c43}
+.ticker span{
+  background:#fff;border:1px solid #dfe6ee;color:#778695;
+  box-shadow:0 3px 10px rgba(30,50,70,.03)
+}
+.ticker b{color:#26384a}
+
+:root{
+  --bg:#f6f2e9;
+  --paper:#fffdf8;
+  --ink:#17263a;
+  --navy:#18324f;
+  --muted:#6e7882;
+  --line:#e5dfd3;
+  --blue:#2867d6;
+  --green:#16865a;
+  --greenSoft:#e8f6ee;
+  --red:#c84b43;
+  --redSoft:#fff0ed;
+  --gold:#c99122;
+  --goldSoft:#fff6dc;
+}
+body{
+  background:
+    radial-gradient(circle at 12% 0%,rgba(40,103,214,.07),transparent 27%),
+    linear-gradient(180deg,#faf8f2,#f3efe7);
+  color:var(--ink);
+}
+header{
+  background:rgba(255,253,248,.96);
+  border-bottom:1px solid #e7e0d4;
+}
+.brand .logo{
+  background:linear-gradient(135deg,#18324f,#28527c);
+  box-shadow:0 8px 20px rgba(24,50,79,.2);
+}
+.welcome{
+  background:linear-gradient(135deg,#18324f 0%,#244b70 72%,#315d85 100%);
+  border:none;
+  color:#fff;
+  box-shadow:0 18px 42px rgba(24,50,79,.16);
+}
+.welcome h2{color:#fff}
+.welcome p{color:rgba(255,255,255,.78)}
+.welcome .eyebrow{color:#f1cc72}
+.steps span{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);color:#eef4f8}
+.steps b{background:#fff;color:#18324f}
+.card,.hero,.market-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  box-shadow:0 9px 28px rgba(40,45,50,.055);
+}
+input{background:#fffefa;border-color:#ddd8cf;color:var(--ink)}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(40,103,214,.1)}
+.actions button:first-child{
+  background:linear-gradient(135deg,#2867d6,#3979e4);
+  box-shadow:0 8px 18px rgba(40,103,214,.2);
+}
+button.secondary,.toggle,#detailsBtn{
+  background:#f1eee7!important;color:#485768!important;border-color:#ddd7cd!important;
+}
+.winner-card{
+  position:relative;
+  background:linear-gradient(135deg,#fff9e8,#fffdf7);
+  border:1px solid #ead39b;
+  box-shadow:0 12px 30px rgba(201,145,34,.10);
+}
+.winner-card small{color:#92701e!important;font-weight:900;letter-spacing:.7px}
+.winner-card .value{color:#6e5010!important}
+.monthly-card{border-top:3px solid #2867d6}
+.total-card{
+  border-top:3px solid #16865a;
+  background:linear-gradient(180deg,#f5fcf8,#fffdf8);
+}
+.total-card .value{color:#13734d!important}
+.delta.good{color:#16865a}
+.saving{
+  background:linear-gradient(135deg,#e8f6ee,#f5fbf7);
+  border:1px solid #cbe7d6;
+  color:#116f49;
+  font-size:18px;
+}
+.hero-box{background:#fff;border:1px solid #e4ded4}
+.hero-box .big{color:#18324f}
+.step-heading>span{background:#18324f}
+.step-heading b{color:#18324f}
+.stat{background:#fff;border-color:#e5dfd5}
+.stat b{color:#18324f}
+.chart-row{background:#fff;border-color:#e5dfd5}
+.chart-track{background:#ece8e0}
+.chart-fill.cheaper-bar{background:linear-gradient(90deg,#1c9a68,#35bd84)}
+.chart-fill.expensive-bar{background:linear-gradient(90deg,#d8655d,#c84b43)}
+td.cheaper{background:#e8f6ee!important;color:#116f49}
+td.expensive{background:#fff0ed!important;color:#a63d36}
+.ticker span{background:#fffdf8;border-color:#e5dfd5}
+.module-pill.active{background:#eaf1fc;color:#2457ae;border-color:#d5e1f5}
+.market-card .value{font-variant-numeric:tabular-nums}
+.market-strip{align-items:stretch}
+.market-card{transition:transform .18s ease,box-shadow .18s ease}
+.market-card:hover{transform:translateY(-2px)}
+.attention-note{
+  display:flex;align-items:center;gap:10px;margin:4px 0 18px;padding:11px 14px;
+  background:#fffdf8;border:1px solid #e6dfd4;border-radius:12px;color:#66717c;font-size:12px
+}
+.attention-dot{width:8px;height:8px;border-radius:50%;background:#16865a;box-shadow:0 0 0 4px rgba(22,134,90,.10)}
+
+.benefit-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.benefit-row span{font-size:12px;font-weight:700;color:#e8f2fb;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.13);padding:8px 11px;border-radius:999px}
+.insight-strip{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;margin:14px 0 16px;padding:18px 20px;background:#fffdf8;border:1px solid #e5dfd3;border-radius:16px;box-shadow:0 7px 22px rgba(40,45,50,.04)}
+.insight-strip small{display:block;color:#8b7650;font-size:10px;font-weight:900;letter-spacing:1px;margin-bottom:5px}
+.insight-strip b{display:block;color:#18324f;font-size:15px}
+.insight-strip span{display:block;color:#73808b;font-size:12px;margin-top:4px}
+.insight-arrow{font-size:25px;color:#c99122}
+.trust-card{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;margin-top:18px;padding:22px;background:linear-gradient(135deg,#f6faf8,#fffdf8);border:1px solid #d8e8df;border-radius:18px}
+.trust-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#e3f4eb;color:#16865a;font-size:21px;font-weight:900}
+.trust-card h3{margin:0 0 6px;color:#18324f}
+.trust-card p{margin:0;color:#687783;line-height:1.5;font-size:13px}
+.trust-points{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.trust-points span{font-size:11px;font-weight:700;padding:7px 10px;border-radius:999px;background:#fff;border:1px solid #dfe7e2;color:#557064}
+.winner-card:before{content:"EMPFOHLENE KOSTENWAHL";position:absolute;right:12px;top:10px;font-size:8px;font-weight:900;letter-spacing:.8px;color:#a57a1f;background:#fff1c7;padding:5px 7px;border-radius:999px}
+.total-card .value{font-size:31px}
+@media(max-width:700px){.insight-strip{grid-template-columns:1fr}.insight-arrow{transform:rotate(90deg);justify-self:center}.benefit-row{display:grid}}
+
+.module-nav{display:flex;gap:9px;flex-wrap:wrap;margin:0 auto 18px;max-width:1220px;padding:0 16px}
+.module-tab{background:#fffdf8!important;color:#536170!important;border:1px solid #ddd7cd!important;box-shadow:none!important}
+.module-tab.active{background:#18324f!important;color:#fff!important;border-color:#18324f!important}
+.module-page{display:none}.module-page.active{display:block}
+.simple-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.simple-grid>.card{position:relative;transition:transform .18s ease,box-shadow .18s ease}.simple-grid>.card:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(23,34,51,.09)}
+.module-hero{background:linear-gradient(135deg,#18324f,#315d85);color:#fff;border-radius:24px;padding:30px;margin-bottom:18px}
+.module-hero h2{font-size:29px;margin:5px 0 8px}.module-hero p{color:rgba(255,255,255,.78);max-width:720px}
+.result-market{display:grid;grid-template-columns:1.2fr .9fr .9fr;gap:12px;margin-top:16px}
+.result-market .market-card{min-height:115px}
+.module-chart{display:grid;gap:14px;margin-top:15px}
+.module-note{font-size:12px;color:#718090;margin-top:12px}
+@media(max-width:850px){.simple-grid,.result-market{grid-template-columns:1fr}}
+
+.module-actions{margin-top:12px;margin-bottom:18px}
+.module-actions button:first-child{background:linear-gradient(135deg,#2867d6,#3979e4)}
+
+.premium-btn{background:linear-gradient(135deg,#b98218,#d4a33a)!important;color:#fff!important;border:none!important;box-shadow:0 8px 20px rgba(185,130,24,.18)!important}
+.pr-modal{display:none;position:fixed;inset:0;background:rgba(12,25,38,.58);z-index:9999;place-items:center;padding:20px}
+.pr-modal.open{display:grid}
+.pr-dialog{position:relative;width:min(620px,100%);background:#fffdf8;border-radius:24px;padding:30px;box-shadow:0 28px 80px rgba(0,0,0,.28);border:1px solid #eadbb8}
+.pr-close{position:absolute;right:13px;top:10px;background:transparent!important;color:#6d7983!important;box-shadow:none!important;font-size:26px;padding:3px 9px}
+.pr-badge{display:inline-block;font-size:10px;font-weight:900;letter-spacing:1.2px;color:#946f1e;background:#fff2ca;padding:7px 10px;border-radius:999px}
+.pr-dialog h2{font-size:28px;color:#18324f;margin:13px 0 7px}
+.pr-lead{color:#697985;line-height:1.55}
+.pr-features{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0}
+.pr-features span{background:#f6f4ed;border:1px solid #e7e0d4;border-radius:10px;padding:10px;font-size:12px;color:#536675}
+.pr-label{display:block;font-weight:800;color:#536170;margin:12px 0 6px}
+.pr-input{width:100%;box-sizing:border-box}
+.pr-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.pr-dialog>small{display:block;color:#8b959e;margin-top:14px;line-height:1.4}
+@media(max-width:650px){.pr-features{grid-template-columns:1fr}}
+
+
+.public-hero{max-width:1188px;margin:26px auto 24px;padding:52px 48px;border-radius:28px;background:linear-gradient(135deg,#132d48,#285579);color:#fff;box-shadow:0 24px 60px rgba(24,50,79,.17);position:relative;overflow:hidden}
+.public-hero:after{content:"€";position:absolute;right:35px;top:-80px;font-size:280px;font-weight:900;opacity:.035}.public-kicker,.sales-kicker{font-size:10px;font-weight:900;letter-spacing:1.4px;color:#efc96d}
+.public-hero h2{font-size:48px;line-height:1.02;letter-spacing:-1.5px;margin:13px 0}.public-hero h2 span{color:#a9c7ff}.public-hero>p{max-width:760px;color:rgba(255,255,255,.75);line-height:1.65;font-size:16px}
+.public-cta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:24px}.public-cta span{font-size:12px;color:rgba(255,255,255,.62)}.public-trust{display:flex;gap:18px;flex-wrap:wrap;margin-top:30px;font-size:12px;color:rgba(255,255,255,.72)}
+.module-heading{max-width:1188px;margin:30px auto 10px;padding:0 16px}.module-heading small{font-weight:900;letter-spacing:1.2px;color:#96742a}.module-heading h3{font-size:25px;margin:5px 0}
+.pr-pricebox{display:flex;align-items:center;justify-content:space-between;background:#f8f3e7;border:1px solid #ead9ae;border-radius:14px;padding:14px 16px;margin-top:16px}.pr-pricebox small,.pr-pricebox span{display:block;color:#806f51}.pr-pricebox b{display:block;font-size:29px;color:#18324f}.pr-lock{font-size:25px}
+.sales-section{max-width:1188px;margin:35px auto;padding:38px;border-radius:26px;background:#173450;color:#fff}.sales-section h2{font-size:31px;margin:8px 0}.sales-section>div>p{max-width:760px;color:rgba(255,255,255,.7);line-height:1.6}.sales-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:25px 0}.sales-grid>div{padding:18px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.06);border-radius:15px}.sales-grid b{color:#efc96d}.sales-grid h3{margin:8px 0 5px}.sales-grid p{font-size:12px;color:rgba(255,255,255,.63);line-height:1.45}.sales-button{background:linear-gradient(135deg,#b98218,#d4a33a)!important}.test-note{display:block;margin-top:8px;color:rgba(255,255,255,.48)}
+.site-footer{max-width:1188px;margin:20px auto 40px;padding:24px 16px;border-top:1px solid #ded8ce;display:grid;gap:13px;color:#71808b}.site-footer>div:first-child{display:flex;gap:10px;align-items:baseline}.site-footer b{color:#18324f;font-size:18px}.footer-links{display:flex;gap:8px;flex-wrap:wrap}.footer-links button{background:transparent!important;color:#667681!important;box-shadow:none!important;border:1px solid #ddd7cd!important;padding:7px 10px!important}.site-footer small{font-size:10px}
+@media(max-width:760px){.public-hero{margin:14px;padding:34px 24px}.public-hero h2{font-size:36px}.sales-section{margin:24px 14px;padding:25px}.sales-grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><div class="brand"><div class="logo">L</div><div><h1>LifeCost</h1><div class="sub">Deine großen Entscheidungen. Klar gerechnet.</div></div></div><div class="sub">FINANCIAL DECISION DASHBOARD</div></header>
+<section class="public-hero">
+  <div class="public-kicker">LIFECOST · KOSTENLOS STARTEN</div>
+  <h2>Große Entscheidungen.<br><span>Klar gerechnet.</span></h2>
+  <p>Vergleiche Auto, Immobilienkauf, Mietwohnung, PV-Anlage oder Wohnmobil mit deinen eigenen Zahlen. LifeCost zeigt dir verständlich, wo dein Geld langfristig bleibt.</p>
+  <div class="public-cta"><button onclick="document.querySelector('.module-nav').scrollIntoView({behavior:'smooth'})">Jetzt kostenlos vergleichen</button><span>Keine Anmeldung · Sofortiges Ergebnis</span></div>
+  <div class="public-trust"><span>✓ Transparente Berechnung</span><span>✓ Eigene Annahmen</span><span>✓ Premium-Report optional</span></div>
+</section>
+<section class="module-heading"><small>WAS MÖCHTEST DU VERGLEICHEN?</small><h3>Wähle deinen Kostencheck</h3></section>
+<nav class="module-nav">
+<button class="module-tab active" onclick="showModule('auto',this)">🚗 Autos</button>
+<button class="module-tab" onclick="showModule('home',this)">🏠 Haus & Wohnung kaufen</button>
+<button class="module-tab" onclick="showModule('rent',this)">🏢 Wohnung mieten</button>
+<button class="module-tab" onclick="showModule('pv',this)">☀️ PV-Anlagen</button>
+<button class="module-tab" onclick="showModule('rv',this)">🚐 Wohnmobile</button>
+</nav>
+<div class="module-page active" id="page-auto"><main>
+  <section class="welcome">
+    <div class="eyebrow">DEIN PERSÖNLICHER KOSTENCHECK</div>
+    <h2>Der Kaufpreis ist nur ein Teil der Wahrheit.</h2>
+    <p>Finde heraus, welches deiner beiden Autos dich langfristig wirklich weniger kostet. LifeCost macht versteckte Kostentreiber sichtbar und übersetzt sie in eine klare Entscheidung.</p>
+    <div class="benefit-row">
+      <span>✓ Keine Anmeldung</span>
+      <span>✓ Deine eigenen Zahlen</span>
+      <span>✓ Ergebnis sofort sichtbar</span>
+    </div>
+    <div class="steps"><span><b>1</b> Autos eintragen</span><span><b>2</b> Kosten vergleichen</span><span><b>3</b> Bessere Wahl sehen</span></div>
+  </section>
+  <div class="ticker">
+    <span>PORTFOLIO <b>Auto-Vergleich</b></span>
+    <span>MODELL <b>Langzeitkosten</b></span>
+    <span>STATUS <b>Live-Berechnung</b></span>
+    <span>RISIKO <b>Kostenfalle vermeiden</b></span>
+  </div>
+  <div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
+  <div class="market-strip">
+    <div class="market-card winner-card">
+      <small>🏆 BESTE WAHL</small>
+      <div class="value" id="marketWinner">Noch offen</div>
+      <div class="delta good" id="marketDelta">Werte eingeben</div>
+    </div>
+    <div class="market-card monthly-card">
+      <small>↓ WENIGER PRO MONAT</small>
+      <div class="value" id="marketMonthly">0,00 €</div>
+      <div class="delta good">gegenüber der teureren Option</div>
+    </div>
+    <div class="market-card total-card">
+      <small>+ GESAMTERSPARNIS</small>
+      <div class="value" id="marketTotal">0,00 €</div>
+      <div class="delta good">über deine geplante Haltedauer</div>
+    </div>
+  </div>
+  <div class="step-heading"><span>1</span><div><b>Deine Autos</b><small>Du brauchst keine perfekten Zahlen. Starte mit dem, was du weißt.</small></div></div>
+  <div class="actions">
+    <button onclick="calculate()">Kosten vergleichen</button>
+    <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openPremiumReport()">★ Premium-Report erstellen</button>
+    <button class="secondary" onclick="resetAll()">Zurücksetzen</button>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <div class="car-head"><div class="car-icon">🚗</div><div style="flex:1"><label>Auto A benennen</label><input id="nameA" type="text" placeholder="z. B. VW Golf"></div></div>
+      <div class="fields">
+        <div><label>Was kostet das Auto? (€)</label><input id="priceA" type="number" step="0.01" placeholder="z. B. 30000"></div>
+        <div><label>Wie viele Jahre möchtest du es behalten?</label><input id="yearsA" type="number" step="0.1" placeholder="z. B. 5"></div>
+        <div><label>Für wie viel kannst du es später ungefähr verkaufen? (€)</label><input id="resaleA" type="number" step="0.01" placeholder="z. B. 14000"></div>
+        <div><label>Versicherung pro Monat (€)</label><input id="insuranceA" type="number" step="0.01" placeholder="z. B. 120"></div>
+        <div><label>Sprit / Strom pro Monat (€)</label><input id="fuelA" type="number" step="0.01" placeholder="z. B. 180"></div>
+        <div><label>Service & Reparaturen pro Jahr (€)</label><input id="serviceA" type="number" step="0.01" placeholder="z. B. 900"></div>
+      </div>
+      <button class="toggle" onclick="toggleExtra('extraA',this)">Optional: weitere Kosten ▼</button>
+      <div id="extraA" class="fields extra">
+        <div><label>Anzahlung (€)</label><input id="downA" type="number" step="0.01" placeholder="z. B. 5000"></div>
+        <div><label>Kreditzinsen pro Jahr (%)</label><input id="interestA" type="number" step="0.01" placeholder="z. B. 5"></div>
+        <div><label>Steuer pro Jahr (€)</label><input id="taxA" type="number" step="0.01" placeholder="z. B. 250"></div>
+        <div><label>Andere Kosten pro Monat (€)</label><input id="otherA" type="number" step="0.01" placeholder="z. B. 50"></div>
+        <div><label>Kilometer pro Jahr</label><input id="kmA" type="number" step="1" placeholder="z. B. 15000"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="car-head"><div class="car-icon">🚗</div><div style="flex:1"><label>Auto B benennen</label><input id="nameB" type="text" placeholder="z. B. BMW 3er"></div></div>
+      <div class="fields">
+        <div><label>Was kostet das Auto? (€)</label><input id="priceB" type="number" step="0.01" placeholder="z. B. 28000"></div>
+        <div><label>Wie viele Jahre möchtest du es behalten?</label><input id="yearsB" type="number" step="0.1" placeholder="z. B. 5"></div>
+        <div><label>Für wie viel kannst du es später ungefähr verkaufen? (€)</label><input id="resaleB" type="number" step="0.01" placeholder="z. B. 13000"></div>
+        <div><label>Versicherung pro Monat (€)</label><input id="insuranceB" type="number" step="0.01" placeholder="z. B. 110"></div>
+        <div><label>Sprit / Strom pro Monat (€)</label><input id="fuelB" type="number" step="0.01" placeholder="z. B. 160"></div>
+        <div><label>Service & Reparaturen pro Jahr (€)</label><input id="serviceB" type="number" step="0.01" placeholder="z. B. 800"></div>
+      </div>
+      <button class="toggle" onclick="toggleExtra('extraB',this)">Optional: weitere Kosten ▼</button>
+      <div id="extraB" class="fields extra">
+        <div><label>Anzahlung (€)</label><input id="downB" type="number" step="0.01" placeholder="z. B. 5000"></div>
+        <div><label>Kreditzinsen pro Jahr (%)</label><input id="interestB" type="number" step="0.01" placeholder="z. B. 5"></div>
+        <div><label>Steuer pro Jahr (€)</label><input id="taxB" type="number" step="0.01" placeholder="z. B. 250"></div>
+        <div><label>Andere Kosten pro Monat (€)</label><input id="otherB" type="number" step="0.01" placeholder="z. B. 50"></div>
+        <div><label>Kilometer pro Jahr</label><input id="kmB" type="number" step="1" placeholder="z. B. 15000"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="step-heading result-step"><span>2</span><div><b>Marktübersicht</b><small>Deine Zahlen werden in eine klare finanzielle Entscheidung übersetzt.</small></div></div>
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-box"><small id="labelA">Auto A kostet dich ungefähr pro Monat</small><div class="big" id="monthlyA">0,00 €</div><small id="totalA">Gesamtkosten: 0,00 €</small></div>
+      <div class="hero-box"><small id="labelB">Auto B kostet dich ungefähr pro Monat</small><div class="big" id="monthlyB">0,00 €</div><small id="totalB">Gesamtkosten: 0,00 €</small></div>
+    </div>
+    <div id="saving" class="saving warning">Trage die Werte ein und klicke auf „Kosten vergleichen“.</div>
+  </section>
+  <section class="insight-strip">
+    <div><small>DEIN VORTEIL</small><b>Sieh nicht nur, was günstiger ist.</b><span>LifeCost zeigt dir auch, warum.</span></div>
+    <div class="insight-arrow">→</div>
+    <div><small>DEINE KONTROLLE</small><b>Ändere jeden Wert jederzeit.</b><span>Du siehst sofort, wie sich deine Entscheidung verändert.</span></div>
+  </section>
+
+  <section class="card stats">
+    <div class="section-title"><div class="icon">📊</div><h2 style="margin:0">Kennzahlen</h2></div>
+    <div class="stats-grid">
+      <div class="stat"><small>Auto A / Jahr</small><b id="annualA">0,00 €</b></div>
+      <div class="stat"><small>Auto B / Jahr</small><b id="annualB">0,00 €</b></div>
+      <div class="stat"><small>Auto A Wertverlust</small><b id="depA">0,00 €</b></div>
+      <div class="stat"><small>Auto B Wertverlust</small><b id="depB">0,00 €</b></div>
+    </div>
+  </section>
+  <section class="card stats">
+    <div class="step-heading inside-step"><span>3</span><div><b>Kostenentwicklung & Vergleich</b><small>Entdecke, wo dein Geld wirklich hingeht und welche Kosten den Unterschied machen.</small></div></div>
+    <div class="section-title"><div class="icon">📈</div><h2 style="margin:0">Kosten-Chart</h2></div>
+    <div class="note" style="margin-top:0">Vergleiche die wichtigsten Kosten direkt. Grün zeigt dir den günstigeren Wert.</div>
+    <div id="costChart" class="cost-chart"></div>
+  </section>
+
+  <button id="detailsBtn" style="width:100%;margin-top:16px" onclick="toggleDetails()">Alle Details anzeigen ▼</button>
+
+  <section id="compareCard" class="card compare">
+    <div class="section-title"><div class="icon">🔎</div><h2 style="margin:0">Alle Kosten im Detail</h2></div>
+    <div id="comparison"></div>
+  </section>
+
+  <section class="trust-card">
+  <div class="trust-icon">✓</div>
+  <div>
+    <h3>Eine Entscheidung auf Basis deiner Zahlen.</h3>
+    <p>Keine versteckten Empfehlungen. Kein Auto wird bevorzugt. LifeCost vergleicht ausschließlich die Angaben, die du selbst eingibst.</p>
+    <div class="trust-points"><span>Transparent gerechnet</span><span>Jeder Wert veränderbar</span><span>Ergebnis sofort neu berechnet</span></div>
+  </div>
+</section>
+<div class="note">Hinweis: LifeCost liefert Planungswerte auf Basis deiner Eingaben. Finanzierungskosten werden vereinfacht berechnet.</div>
+</main></div>
+
+<div class="module-page" id="page-home">
+<main>
+<section class="welcome">
+  <div class="eyebrow">DEIN PERSÖNLICHER KOSTENCHECK</div>
+  <h2>Der Kaufpreis ist nur ein Teil der Wahrheit.</h2>
+  <p>Vergleiche Haus oder Eigentumswohnung und sieh, welche Kaufoption dich langfristig wirklich weniger kostet.</p>
+  <div class="benefit-row"><span>✓ Keine Anmeldung</span><span>✓ Deine eigenen Zahlen</span><span>✓ Ergebnis sofort sichtbar</span></div>
+  <div class="steps"><span><b>1</b> Immobilien eintragen</span><span><b>2</b> Kosten vergleichen</span><span><b>3</b> Bessere Wahl sehen</span></div>
+</section>
+<div class="ticker"><span>PORTFOLIO <b>Immobilien-Kauf</b></span><span>MODELL <b>Langzeitkosten</b></span><span>STATUS <b>Live-Berechnung</b></span><span>FOKUS <b>Vermögen & Kosten</b></span></div>
+<div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
+<div class="actions module-actions">
+      <button onclick="calcHome()">Kosten vergleichen</button>
+      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openPremiumReport()">★ Premium-Report erstellen</button>
+      <button class="secondary" onclick="resetModule('home')">Zurücksetzen</button>
+    </div>
+<div class="step-heading"><span>1</span><div><b>Deine zwei Kaufoptionen</b><small>Vergleiche Haus oder Wohnung mit deinen eigenen Zahlen.</small></div></div>
+<div class="simple-grid">
+<section class="card"><div class="car-head"><div class="car-icon">🏠</div><div style="flex:1"><label>Option A benennen</label><input id="hNameA" type="text" placeholder="z. B. Variante A"></div></div><div class="fields"><div><label>Kaufpreis (€)</label><input id="hPriceA" type="number" step="0.01" placeholder="z. B. 350000"></div><div><label>Geplante Haltedauer (Jahre)</label><input id="hYearsA" type="number" step="0.01" placeholder="z. B. 15"></div><div><label>Geschätzter Wert am Ende (€)</label><input id="hResaleA" type="number" step="0.01" placeholder="z. B. 430000"></div><div><label>Eigenkapital (€)</label><input id="hEquityA" type="number" step="0.01" placeholder="z. B. 70000"></div><div><label>Kreditzins pro Jahr (%)</label><input id="hInterestA" type="number" step="0.01" placeholder="z. B. 3.5"></div><div><label>Betriebskosten pro Monat (€)</label><input id="hRunningA" type="number" step="0.01" placeholder="z. B. 350"></div><div><label>Instandhaltung pro Jahr (€)</label><input id="hMaintainA" type="number" step="0.01" placeholder="z. B. 3000"></div><div><label>Sonstige Kosten pro Jahr (€)</label><input id="hOtherA" type="number" step="0.01" placeholder="z. B. 1200"></div></div></section>
+<section class="card"><div class="car-head"><div class="car-icon">🏠</div><div style="flex:1"><label>Option B benennen</label><input id="hNameB" type="text" placeholder="z. B. Variante B"></div></div><div class="fields"><div><label>Kaufpreis (€)</label><input id="hPriceB" type="number" step="0.01" placeholder="z. B. 350000"></div><div><label>Geplante Haltedauer (Jahre)</label><input id="hYearsB" type="number" step="0.01" placeholder="z. B. 15"></div><div><label>Geschätzter Wert am Ende (€)</label><input id="hResaleB" type="number" step="0.01" placeholder="z. B. 430000"></div><div><label>Eigenkapital (€)</label><input id="hEquityB" type="number" step="0.01" placeholder="z. B. 70000"></div><div><label>Kreditzins pro Jahr (%)</label><input id="hInterestB" type="number" step="0.01" placeholder="z. B. 3.5"></div><div><label>Betriebskosten pro Monat (€)</label><input id="hRunningB" type="number" step="0.01" placeholder="z. B. 350"></div><div><label>Instandhaltung pro Jahr (€)</label><input id="hMaintainB" type="number" step="0.01" placeholder="z. B. 3000"></div><div><label>Sonstige Kosten pro Jahr (€)</label><input id="hOtherB" type="number" step="0.01" placeholder="z. B. 1200"></div></div></section>
+</div>
+<div class="step-heading result-step"><span>2</span><div><b>Dein Ergebnis</b><small>Die wichtigsten Kennzahlen auf einen Blick.</small></div></div>
+<div class="result-market">
+<div class="market-card winner-card"><small>🏆 BESTE FINANZIELLE WAHL</small><div class="value" id="hWinner">Noch offen</div><div class="delta good" id="hDelta">Werte eingeben</div></div>
+<div class="market-card monthly-card"><small>KOSTENVORTEIL / MONAT</small><div class="value" id="hMetric1">0,00 €</div><div class="delta good" id="hMetric1Label">Vergleich</div></div>
+<div class="market-card total-card"><small>+ GESAMTVORTEIL</small><div class="value" id="hMetric2">0,00 €</div><div class="delta good">über den Betrachtungszeitraum</div></div>
+</div>
+<section class="card stats"><div class="section-title"><div class="icon">📈</div><h2 style="margin:0">Vergleich als Diagramm</h2></div><div id="hChart" class="module-chart"></div></section>
+<section class="trust-card"><div class="trust-icon">✓</div><div><h3>Eine Entscheidung auf Basis deiner Zahlen.</h3><p>Keine versteckten Empfehlungen. LifeCost vergleicht ausschließlich deine Eingaben und macht die Rechnung nachvollziehbar.</p></div></section>
+</main></div>
+
+
+<div class="module-page" id="page-rent"><main>
+  <section class="welcome">
+    <div class="eyebrow">DEIN PERSÖNLICHER KOSTENCHECK</div>
+    <h2>Welche Mietwohnung lässt dir langfristig mehr Geld?</h2>
+    <p>Vergleiche zwei Mietwohnungen mit Miete, Betriebskosten, Kaution, möglicher Mietsteigerung und weiteren laufenden Kosten.</p>
+    <div class="benefit-row">
+      <span>✓ Keine Anmeldung</span>
+      <span>✓ Deine eigenen Zahlen</span>
+      <span>✓ Ergebnis sofort sichtbar</span>
+    </div>
+    <div class="steps">
+      <span><b>1</b> Wohnungen eintragen</span>
+      <span><b>2</b> Kosten vergleichen</span>
+      <span><b>3</b> Bessere Wahl sehen</span>
+    </div>
+  </section>
+  <div class="ticker"><span>PORTFOLIO <b>Mietwohnungs-Vergleich</b></span><span>MODELL <b>Wohnkosten</b></span><span>STATUS <b>Live-Berechnung</b></span><span>FOKUS <b>Monatliche Belastung</b></span></div>
+<div class="actions module-actions">
+      <button onclick="calcRent()">Kosten vergleichen</button>
+      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openPremiumReport()">★ Premium-Report erstellen</button>
+      <button class="secondary" onclick="resetModule('rent')">Zurücksetzen</button>
+    </div>
+
+  <div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
+
+  <div class="market-strip">
+    <div class="market-card winner-card">
+      <small>🏆 BESTE WAHL</small>
+      <div class="value" id="mWinner">Noch offen</div>
+      <div class="delta good" id="mDelta">Werte eingeben</div>
+    </div>
+    <div class="market-card monthly-card">
+      <small>↓ WENIGER PRO MONAT</small>
+      <div class="value" id="mMetric1">0,00 €</div>
+      <div class="delta good">gegenüber der teureren Option</div>
+    </div>
+    <div class="market-card total-card">
+      <small>+ GESAMTERSPARNIS</small>
+      <div class="value" id="mMetric2">0,00 €</div>
+      <div class="delta good">über deine geplante Mietdauer</div>
+    </div>
+  </div>
+
+  <div class="step-heading"><span>1</span><div><b>Deine Wohnungen</b><small>Trage ein, was du über beide Mietwohnungen weißt.</small></div></div>
+
+  <div class="simple-grid">
+    <section class="card">
+      <div class="car-head"><div class="car-icon">🏢</div><div style="flex:1"><label>Wohnung A benennen</label><input id="mNameA" type="text" placeholder="z. B. Wohnung Zentrum"></div></div>
+      <div class="fields"><div><label>Monatliche Miete inkl. Betriebskosten (€)</label><input id="mRentA" type="number" step="0.01" placeholder="z. B. 1200"></div><div><label>Wie viele Jahre möchtest du dort wohnen?</label><input id="mYearsA" type="number" step="0.01" placeholder="z. B. 5"></div><div><label>Einmalkosten / Umzug / Provision (€)</label><input id="mDepositA" type="number" step="0.01" placeholder="z. B. 3000"></div><div><label>Erwartete Mietsteigerung pro Jahr (%)</label><input id="mIncreaseA" type="number" step="0.01" placeholder="z. B. 2"></div><div><label>Parkplatz / Garage pro Monat (€)</label><input id="mParkingA" type="number" step="0.01" placeholder="z. B. 100"></div><div><label>Sonstige Wohnkosten pro Monat (€)</label><input id="mOtherA" type="number" step="0.01" placeholder="z. B. 80"></div></div>
+    </section>
+    <section class="card">
+      <div class="car-head"><div class="car-icon">🏢</div><div style="flex:1"><label>Wohnung B benennen</label><input id="mNameB" type="text" placeholder="z. B. Wohnung Stadtrand"></div></div>
+      <div class="fields"><div><label>Monatliche Miete inkl. Betriebskosten (€)</label><input id="mRentB" type="number" step="0.01" placeholder="z. B. 1200"></div><div><label>Wie viele Jahre möchtest du dort wohnen?</label><input id="mYearsB" type="number" step="0.01" placeholder="z. B. 5"></div><div><label>Einmalkosten / Umzug / Provision (€)</label><input id="mDepositB" type="number" step="0.01" placeholder="z. B. 3000"></div><div><label>Erwartete Mietsteigerung pro Jahr (%)</label><input id="mIncreaseB" type="number" step="0.01" placeholder="z. B. 2"></div><div><label>Parkplatz / Garage pro Monat (€)</label><input id="mParkingB" type="number" step="0.01" placeholder="z. B. 100"></div><div><label>Sonstige Wohnkosten pro Monat (€)</label><input id="mOtherB" type="number" step="0.01" placeholder="z. B. 80"></div></div>
+    </section>
+  </div>
+
+  <div class="step-heading result-step"><span>2</span><div><b>Dein Ergebnis</b><small>Welche Wohnung kostet dich langfristig weniger?</small></div></div>
+
+  <section class="card stats">
+    <div class="section-title"><div class="icon">📈</div><h2 style="margin:0">Woher kommt der Unterschied?</h2></div>
+    <div id="mChart" class="module-chart"></div>
+  </section>
+
+  <section class="trust-card">
+    <div class="trust-icon">✓</div>
+    <div>
+      <h3>Eine Entscheidung auf Basis deiner Zahlen.</h3>
+      <p>Keine versteckten Empfehlungen. LifeCost vergleicht ausschließlich die Angaben, die du selbst eingibst.</p>
+      <div class="trust-points"><span>Transparent gerechnet</span><span>Jeder Wert veränderbar</span><span>Ergebnis sofort neu berechnet</span></div>
+    </div>
+  </section>
+</main></div>
+
+<div class="module-page" id="page-pv">
+<main>
+<section class="welcome">
+  <div class="eyebrow">DEIN PERSÖNLICHER KOSTENCHECK</div>
+  <h2>Nicht die billigste PV-Anlage ist automatisch die beste.</h2>
+  <p>Vergleiche zwei PV-Anlagen und sieh, welche dir über die Jahre den größeren finanziellen Vorteil bringt.</p>
+  <div class="benefit-row"><span>✓ Keine Anmeldung</span><span>✓ Deine eigenen Zahlen</span><span>✓ Ergebnis sofort sichtbar</span></div>
+  <div class="steps"><span><b>1</b> Anlagen eintragen</span><span><b>2</b> Ertrag vergleichen</span><span><b>3</b> Bessere Wahl sehen</span></div>
+</section>
+<div class="ticker"><span>PORTFOLIO <b>PV-Vergleich</b></span><span>MODELL <b>Langzeitertrag</b></span><span>STATUS <b>Live-Berechnung</b></span><span>FOKUS <b>Amortisation</b></span></div>
+<div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
+<div class="actions module-actions">
+      <button onclick="calcPV()">Kosten vergleichen</button>
+      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openPremiumReport()">★ Premium-Report erstellen</button>
+      <button class="secondary" onclick="resetModule('pv')">Zurücksetzen</button>
+    </div>
+<div class="step-heading"><span>1</span><div><b>Deine zwei Optionen</b><small>Trage die Werte ein, die du kennst. Du kannst alles jederzeit ändern.</small></div></div>
+<div class="simple-grid">
+<section class="card"><div class="car-head"><div class="car-icon">☀️</div><div style="flex:1"><label>Option A benennen</label><input id="pNameA" type="text" placeholder="z. B. Variante A"></div></div><div class="fields"><div><label>Anschaffung inkl. Montage (€)</label><input id="pCostA" type="number" step="0.01" placeholder="z. B. 18000"></div><div><label>Betrachtungszeitraum (Jahre)</label><input id="pYearsA" type="number" step="0.01" placeholder="z. B. 20"></div><div><label>Ertrag pro Jahr (kWh)</label><input id="pYieldA" type="number" step="0.01" placeholder="z. B. 9000"></div><div><label>Eigenverbrauch (%)</label><input id="pSelfA" type="number" step="0.01" placeholder="z. B. 35"></div><div><label>Strompreis (€ / kWh)</label><input id="pPowerA" type="number" step="0.01" placeholder="z. B. 0.30"></div><div><label>Einspeisevergütung (€ / kWh)</label><input id="pFeedA" type="number" step="0.01" placeholder="z. B. 0.08"></div><div><label>Wartung pro Jahr (€)</label><input id="pMaintainA" type="number" step="0.01" placeholder="z. B. 150"></div><div><label>Leistungsverlust pro Jahr (%)</label><input id="pDegradeA" type="number" step="0.01" placeholder="z. B. 0.5"></div></div></section>
+<section class="card"><div class="car-head"><div class="car-icon">☀️</div><div style="flex:1"><label>Option B benennen</label><input id="pNameB" type="text" placeholder="z. B. Variante B"></div></div><div class="fields"><div><label>Anschaffung inkl. Montage (€)</label><input id="pCostB" type="number" step="0.01" placeholder="z. B. 18000"></div><div><label>Betrachtungszeitraum (Jahre)</label><input id="pYearsB" type="number" step="0.01" placeholder="z. B. 20"></div><div><label>Ertrag pro Jahr (kWh)</label><input id="pYieldB" type="number" step="0.01" placeholder="z. B. 9000"></div><div><label>Eigenverbrauch (%)</label><input id="pSelfB" type="number" step="0.01" placeholder="z. B. 35"></div><div><label>Strompreis (€ / kWh)</label><input id="pPowerB" type="number" step="0.01" placeholder="z. B. 0.30"></div><div><label>Einspeisevergütung (€ / kWh)</label><input id="pFeedB" type="number" step="0.01" placeholder="z. B. 0.08"></div><div><label>Wartung pro Jahr (€)</label><input id="pMaintainB" type="number" step="0.01" placeholder="z. B. 150"></div><div><label>Leistungsverlust pro Jahr (%)</label><input id="pDegradeB" type="number" step="0.01" placeholder="z. B. 0.5"></div></div></section>
+</div>
+<div class="step-heading result-step"><span>2</span><div><b>Dein Ergebnis</b><small>Die wichtigsten Kennzahlen auf einen Blick.</small></div></div>
+<div class="result-market">
+<div class="market-card winner-card"><small>🏆 BESTE FINANZIELLE WAHL</small><div class="value" id="pWinner">Noch offen</div><div class="delta good" id="pDelta">Werte eingeben</div></div>
+<div class="market-card monthly-card"><small>VORTEIL / JAHR</small><div class="value" id="pMetric1">0,00 €</div><div class="delta good" id="pMetric1Label">Vergleich</div></div>
+<div class="market-card total-card"><small>+ GESAMTVORTEIL</small><div class="value" id="pMetric2">0,00 €</div><div class="delta good">über den Betrachtungszeitraum</div></div>
+</div>
+<section class="card stats"><div class="section-title"><div class="icon">📈</div><h2 style="margin:0">Vergleich als Diagramm</h2></div><div id="pChart" class="module-chart"></div></section>
+<section class="trust-card"><div class="trust-icon">✓</div><div><h3>Eine Entscheidung auf Basis deiner Zahlen.</h3><p>Keine versteckten Empfehlungen. LifeCost vergleicht ausschließlich deine Eingaben und macht die Rechnung nachvollziehbar.</p></div></section>
+</main></div>
+<div class="module-page" id="page-rv">
+<main>
+<section class="welcome">
+  <div class="eyebrow">DEIN PERSÖNLICHER KOSTENCHECK</div>
+  <h2>Der Kaufpreis sagt nicht, was dein Wohnmobil wirklich kostet.</h2>
+  <p>Vergleiche zwei Wohnmobile und finde heraus, welches dir langfristig mehr Budget für deine Reisen lässt.</p>
+  <div class="benefit-row"><span>✓ Keine Anmeldung</span><span>✓ Deine eigenen Zahlen</span><span>✓ Ergebnis sofort sichtbar</span></div>
+  <div class="steps"><span><b>1</b> Wohnmobile eintragen</span><span><b>2</b> Kosten vergleichen</span><span><b>3</b> Bessere Wahl sehen</span></div>
+</section>
+<div class="ticker"><span>PORTFOLIO <b>Wohnmobil-Vergleich</b></span><span>MODELL <b>Langzeitkosten</b></span><span>STATUS <b>Live-Berechnung</b></span><span>FOKUS <b>Mehr Reisebudget</b></span></div>
+<div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
+<div class="actions module-actions">
+      <button onclick="calcRV()">Kosten vergleichen</button>
+      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openPremiumReport()">★ Premium-Report erstellen</button>
+      <button class="secondary" onclick="resetModule('rv')">Zurücksetzen</button>
+    </div>
+<div class="step-heading"><span>1</span><div><b>Deine zwei Optionen</b><small>Trage die Werte ein, die du kennst. Du kannst alles jederzeit ändern.</small></div></div>
+<div class="simple-grid">
+<section class="card"><div class="car-head"><div class="car-icon">🚐</div><div style="flex:1"><label>Option A benennen</label><input id="rNameA" type="text" placeholder="z. B. Variante A"></div></div><div class="fields"><div><label>Kaufpreis (€)</label><input id="rPriceA" type="number" step="0.01" placeholder="z. B. 65000"></div><div><label>Geplante Haltedauer (Jahre)</label><input id="rYearsA" type="number" step="0.01" placeholder="z. B. 8"></div><div><label>Geschätzter Wiederverkaufswert (€)</label><input id="rResaleA" type="number" step="0.01" placeholder="z. B. 35000"></div><div><label>Versicherung pro Jahr (€)</label><input id="rInsuranceA" type="number" step="0.01" placeholder="z. B. 1200"></div><div><label>Steuer / Gebühren pro Jahr (€)</label><input id="rTaxA" type="number" step="0.01" placeholder="z. B. 500"></div><div><label>Sprit pro Monat (€)</label><input id="rFuelA" type="number" step="0.01" placeholder="z. B. 250"></div><div><label>Service & Reparaturen pro Jahr (€)</label><input id="rServiceA" type="number" step="0.01" placeholder="z. B. 1800"></div><div><label>Stellplatz / Sonstiges pro Jahr (€)</label><input id="rOtherA" type="number" step="0.01" placeholder="z. B. 1200"></div></div></section>
+<section class="card"><div class="car-head"><div class="car-icon">🚐</div><div style="flex:1"><label>Option B benennen</label><input id="rNameB" type="text" placeholder="z. B. Variante B"></div></div><div class="fields"><div><label>Kaufpreis (€)</label><input id="rPriceB" type="number" step="0.01" placeholder="z. B. 65000"></div><div><label>Geplante Haltedauer (Jahre)</label><input id="rYearsB" type="number" step="0.01" placeholder="z. B. 8"></div><div><label>Geschätzter Wiederverkaufswert (€)</label><input id="rResaleB" type="number" step="0.01" placeholder="z. B. 35000"></div><div><label>Versicherung pro Jahr (€)</label><input id="rInsuranceB" type="number" step="0.01" placeholder="z. B. 1200"></div><div><label>Steuer / Gebühren pro Jahr (€)</label><input id="rTaxB" type="number" step="0.01" placeholder="z. B. 500"></div><div><label>Sprit pro Monat (€)</label><input id="rFuelB" type="number" step="0.01" placeholder="z. B. 250"></div><div><label>Service & Reparaturen pro Jahr (€)</label><input id="rServiceB" type="number" step="0.01" placeholder="z. B. 1800"></div><div><label>Stellplatz / Sonstiges pro Jahr (€)</label><input id="rOtherB" type="number" step="0.01" placeholder="z. B. 1200"></div></div></section>
+</div>
+<div class="step-heading result-step"><span>2</span><div><b>Dein Ergebnis</b><small>Die wichtigsten Kennzahlen auf einen Blick.</small></div></div>
+<div class="result-market">
+<div class="market-card winner-card"><small>🏆 BESTE FINANZIELLE WAHL</small><div class="value" id="rWinner">Noch offen</div><div class="delta good" id="rDelta">Werte eingeben</div></div>
+<div class="market-card monthly-card"><small>KOSTENVORTEIL / MONAT</small><div class="value" id="rMetric1">0,00 €</div><div class="delta good" id="rMetric1Label">Vergleich</div></div>
+<div class="market-card total-card"><small>+ GESAMTVORTEIL</small><div class="value" id="rMetric2">0,00 €</div><div class="delta good">über den Betrachtungszeitraum</div></div>
+</div>
+<section class="card stats"><div class="section-title"><div class="icon">📈</div><h2 style="margin:0">Vergleich als Diagramm</h2></div><div id="rChart" class="module-chart"></div></section>
+<section class="trust-card"><div class="trust-icon">✓</div><div><h3>Eine Entscheidung auf Basis deiner Zahlen.</h3><p>Keine versteckten Empfehlungen. LifeCost vergleicht ausschließlich deine Eingaben und macht die Rechnung nachvollziehbar.</p></div></section>
+</main></div>
+<script>
+function num(id){
+  const el=document.getElementById(id);
+  if(!el || el.value==="") return 0;
+  const n=parseFloat(String(el.value).replace(",","."));
+  return Number.isFinite(n)?Math.max(0,n):0;
+}
+function eur(n){
+  return new Intl.NumberFormat("de-AT",{style:"currency",currency:"EUR"}).format(Number.isFinite(n)?n:0);
+}
+function car(s){
+  const price=num("price"+s);
+  const years=num("years"+s);
+  const resale=Math.min(num("resale"+s),price);
+  const down=Math.min(num("down"+s),price);
+  const interestRate=num("interest"+s)/100;
+  if(years<=0){
+    return {valid:false,total:0,monthly:0,annual:0,perkm:0,dep:0,interest:0,running:0};
+  }
+  const dep=Math.max(0,price-resale);
+  const interest=(price-down)*interestRate*years;
+  const running=(num("insurance"+s)*12 + num("fuel"+s)*12 + num("service"+s) + num("tax"+s) + num("other"+s)*12)*years;
+  const total=dep+interest+running;
+  const kmTotal=num("km"+s)*years;
+  return {valid:true,total,monthly:total/(years*12),annual:total/years,perkm:kmTotal?total/kmTotal:0,dep,interest,running};
+}
+function cls(a,b){
+  if(Math.abs(a-b)<0.005)return ["equal","equal"];
+  return a<b?["cheaper","expensive"]:["expensive","cheaper"];
+}
+function calculate(){
+  const A=car("A"),B=car("B");
+  const nameA=(document.getElementById("nameA").value||"").trim()||"Auto A";
+  const nameB=(document.getElementById("nameB").value||"").trim()||"Auto B";
+
+  document.getElementById("labelA").textContent=nameA+" kostet dich ungefähr pro Monat";
+  document.getElementById("labelB").textContent=nameB+" kostet dich ungefähr pro Monat";
+  document.getElementById("monthlyA").textContent=eur(A.monthly);
+  document.getElementById("monthlyB").textContent=eur(B.monthly);
+  document.getElementById("totalA").textContent="Gesamtkosten: "+eur(A.total);
+  document.getElementById("totalB").textContent="Gesamtkosten: "+eur(B.total);
+  document.getElementById("annualA").textContent=eur(A.annual);
+  document.getElementById("annualB").textContent=eur(B.annual);
+  document.getElementById("depA").textContent=eur(A.dep);
+  document.getElementById("depB").textContent=eur(B.dep);
+
+  const saving=document.getElementById("saving");
+  const marketWinner=document.getElementById("marketWinner");
+  const marketDelta=document.getElementById("marketDelta");
+  const marketMonthly=document.getElementById("marketMonthly");
+  const marketTotal=document.getElementById("marketTotal");
+
+  if(!A.valid || !B.valid){
+    if(marketWinner)marketWinner.textContent="Noch offen";
+    if(marketDelta)marketDelta.textContent="Bitte Daten eingeben";
+    if(marketMonthly)marketMonthly.textContent=eur(0);
+    if(marketTotal)marketTotal.textContent=eur(0);
+    saving.className="saving warning";
+    saving.textContent="Bitte bei beiden Autos angeben, wie viele Jahre du sie behalten möchtest.";
+  } else if(Math.abs(A.total-B.total)<0.01){
+    saving.className="saving";
+    saving.textContent="Beide Autos liegen bei den Gesamtkosten praktisch gleichauf.";
+    if(marketWinner)marketWinner.textContent="Gleichauf";
+    if(marketDelta)marketDelta.textContent="Kein klarer Kostenvorteil";
+    if(marketMonthly)marketMonthly.textContent=eur(0);
+    if(marketTotal)marketTotal.textContent=eur(0);
+  } else {
+    const winner=A.total<B.total?nameA:nameB;
+    const dMonth=Math.abs(A.monthly-B.monthly);
+    const dTotal=Math.abs(A.total-B.total);
+    saving.className="saving";
+    saving.textContent="🏆 "+winner+" ist nach deinen Angaben die finanziell stärkere Wahl. Dein Kostenvorteil: ungefähr "+eur(dMonth)+" pro Monat und "+eur(dTotal)+" insgesamt.";
+    if(marketWinner)marketWinner.textContent=winner;
+    if(marketDelta)marketDelta.textContent="▲ Finanziell im Vorteil";
+    if(marketMonthly)marketMonthly.textContent=eur(dMonth);
+    if(marketTotal)marketTotal.textContent=eur(dTotal);
+  }
+
+
+  const chartItems=[
+    ["Pro Monat",A.monthly,B.monthly],
+    ["Pro Jahr",A.annual,B.annual],
+    ["Wertverlust",A.dep,B.dep],
+    ["Laufende Kosten",A.running,B.running],
+    ["Gesamtkosten",A.total,B.total]
+  ];
+  const chart=document.getElementById("costChart");
+  chart.innerHTML=chartItems.map(function(item){
+    const av=item[1],bv=item[2],max=Math.max(av,bv,0.01);
+    let ca="equal-bar",cb="equal-bar";
+    if(Math.abs(av-bv)>=0.005){
+      if(av<bv){ca="cheaper-bar";cb="expensive-bar";}
+      else{ca="expensive-bar";cb="cheaper-bar";}
+    }
+    const wa=Math.max(2,(av/max)*100);
+    const wb=Math.max(2,(bv/max)*100);
+    return '<div class="chart-row">'+
+      '<div class="chart-label">'+item[0]+'</div>'+
+      '<div class="chart-bars">'+
+        '<div class="chart-line"><div class="chart-name">'+nameA+'</div><div class="chart-track"><div class="chart-fill '+ca+'" style="width:'+wa+'%"></div></div><div class="chart-value">'+eur(av)+'</div></div>'+
+        '<div class="chart-line"><div class="chart-name">'+nameB+'</div><div class="chart-track"><div class="chart-fill '+cb+'" style="width:'+wb+'%"></div></div><div class="chart-value">'+eur(bv)+'</div></div>'+
+      '</div></div>';
+  }).join("");
+
+  const rows=[
+    ["Kosten / Monat",A.monthly,B.monthly],
+    ["Kosten / Jahr",A.annual,B.annual],
+    ["Kosten / km",A.perkm,B.perkm],
+    ["Wertverlust",A.dep,B.dep],
+    ["Geschätzte Zinskosten",A.interest,B.interest],
+    ["Laufende Kosten",A.running,B.running],
+    ["Gesamtkosten",A.total,B.total]
+  ];
+  document.getElementById("comparison").innerHTML=
+    '<table><thead><tr><th>Kennzahl</th><th>'+nameA+'</th><th>'+nameB+'</th></tr></thead><tbody>'+
+    rows.map(function(r){
+      const c=cls(r[1],r[2]);
+      return '<tr><td>'+r[0]+'</td><td class="'+c[0]+'">'+eur(r[1])+'</td><td class="'+c[1]+'">'+eur(r[2])+'</td></tr>';
+    }).join("")+'</tbody></table>';
+}
+function toggleExtra(id,btn){
+  const el=document.getElementById(id);
+  const open=el.classList.contains("open");
+  el.classList.toggle("open",!open);
+  btn.textContent=open?"Optional: weitere Kosten ▼":"Optionale Kosten ausblenden ▲";
+}
+function toggleDetails(){
+  const card=document.getElementById("compareCard");
+  const btn=document.getElementById("detailsBtn");
+  const open=card.classList.contains("open");
+  card.classList.toggle("open",!open);
+  btn.textContent=open?"Alle Details anzeigen ▼":"Details ausblenden ▲";
+}
+function resetAll(){
+  document.querySelectorAll("input").forEach(function(i){i.value="";});
+  document.getElementById("extraA").classList.remove("open");
+  document.getElementById("extraB").classList.remove("open");
+  document.getElementById("compareCard").classList.remove("open");
+  document.querySelectorAll(".toggle").forEach(function(b){b.textContent="Optional: weitere Kosten ▼";});
+  document.getElementById("detailsBtn").textContent="Alle Details anzeigen ▼";
+  calculate();
+  document.getElementById("saving").className="saving warning";
+  document.getElementById("saving").textContent="Trage die Werte ein und klicke auf „Kosten vergleichen“.";
+  document.getElementById("marketWinner").textContent="Noch offen";
+  document.getElementById("marketDelta").textContent="Werte eingeben";
+  document.getElementById("marketMonthly").textContent=eur(0);
+  document.getElementById("marketTotal").textContent=eur(0);
+}
+document.addEventListener("DOMContentLoaded",function(){
+  document.querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input",calculate);
+    el.addEventListener("change",calculate);
+  });
+  calculate();
+});
+
+function showModule(id,btn){document.querySelectorAll('.module-page').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.module-tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+function N(id){const e=document.getElementById(id);if(!e||e.value==='')return 0;const n=parseFloat(String(e.value).replace(',','.'));return Number.isFinite(n)?Math.max(0,n):0}
+function E(n){return new Intl.NumberFormat('de-AT',{style:'currency',currency:'EUR'}).format(Number.isFinite(n)?n:0)}
+function barRow(label,a,b,na,nb){let ca='equal-bar',cb='equal-bar';if(Math.abs(a-b)>.005){if(a<b){ca='cheaper-bar';cb='expensive-bar'}else{ca='expensive-bar';cb='cheaper-bar'}}const m=Math.max(a,b,.01);return `<div class="chart-row"><div class="chart-label">${label}</div><div class="chart-bars"><div class="chart-line"><div class="chart-name">${na}</div><div class="chart-track"><div class="chart-fill ${ca}" style="width:${Math.max(2,a/m*100)}%"></div></div><div class="chart-value">${E(a)}</div></div><div class="chart-line"><div class="chart-name">${nb}</div><div class="chart-track"><div class="chart-fill ${cb}" style="width:${Math.max(2,b/m*100)}%"></div></div><div class="chart-value">${E(b)}</div></div></div></div>`}
+function calcHome(){
+ const nameA=document.getElementById('hNameA').value.trim()||'Option A',nameB=document.getElementById('hNameB').value.trim()||'Option B';
+ function c(s){const price=N('hPrice'+s),y=N('hYears'+s),res=N('hResale'+s),eq=Math.min(N('hEquity'+s),price),interest=(price-eq)*(N('hInterest'+s)/100)*y,run=(N('hRunning'+s)*12+N('hMaintain'+s)+N('hOther'+s))*y,total=Math.max(0,price-res)+interest+run;return{y,total,month:y?total/(y*12):0,interest,run,dep:Math.max(0,price-res)}} const a=c('A'),b=c('B'); updateGeneric('h',a,b,nameA,nameB,'Monat',[[ 'Gesamtkosten',a.total,b.total],['Finanzierung',a.interest,b.interest],['Laufende Kosten',a.run,b.run],['Wertveränderung / Kaufanteil',a.dep,b.dep]]);}
+
+function benefitBarRow(label,a,b,na,nb){
+  let ca='equal-bar',cb='equal-bar';
+  if(Math.abs(a-b)>.005){
+    if(a>b){ca='cheaper-bar';cb='expensive-bar'}
+    else{ca='expensive-bar';cb='cheaper-bar'}
+  }
+  const m=Math.max(Math.abs(a),Math.abs(b),.01);
+  return `<div class="chart-row"><div class="chart-label">${label}</div><div class="chart-bars">
+    <div class="chart-line"><div class="chart-name">${na}</div><div class="chart-track"><div class="chart-fill ${ca}" style="width:${Math.max(2,Math.abs(a)/m*100)}%"></div></div><div class="chart-value">${E(a)}</div></div>
+    <div class="chart-line"><div class="chart-name">${nb}</div><div class="chart-track"><div class="chart-fill ${cb}" style="width:${Math.max(2,Math.abs(b)/m*100)}%"></div></div><div class="chart-value">${E(b)}</div></div>
+  </div></div>`;
+}
+
+function calcPV(){
+ const nameA=document.getElementById('pNameA').value.trim()||'PV A',nameB=document.getElementById('pNameB').value.trim()||'PV B';
+ function c(s){const cost=N('pCost'+s),y=N('pYears'+s),yield0=N('pYield'+s),self=Math.min(1,N('pSelf'+s)/100),power=N('pPower'+s),feed=N('pFeed'+s),maint=N('pMaintain'+s),deg=Math.min(1,N('pDegrade'+s)/100);let benefit=0,yy=yield0;const fullYears=Math.floor(y),partial=y-fullYears;for(let i=0;i<fullYears;i++){benefit+=yy*self*power+yy*(1-self)*feed-maint;yy*=Math.max(0,1-deg)}if(partial>0)benefit+=(yy*self*power+yy*(1-self)*feed-maint)*partial;const net=benefit-cost;return{y,total:net,month:y?net/y:0,benefit,cost,maint:maint*y}}const a=c('A'),b=c('B');const better=a.total>=b.total?nameA:nameB,d=Math.abs(a.total-b.total);document.getElementById('pWinner').textContent=(a.y&&b.y)?better:'Noch offen';document.getElementById('pDelta').textContent=(a.y&&b.y)?'▲ Höherer finanzieller Ertrag':'Werte eingeben';document.getElementById('pMetric1').textContent=E((a.y&&b.y)?Math.abs(a.month-b.month):0);document.getElementById('pMetric2').textContent=E((a.y&&b.y)?d:0);document.getElementById('pChart').innerHTML=benefitBarRow('Gesamtnutzen',a.benefit,b.benefit,nameA,nameB)+barRow('Anschaffung',a.cost,b.cost,nameA,nameB)+barRow('Wartung',a.maint,b.maint,nameA,nameB);}
+function calcRV(){
+ const nameA=document.getElementById('rNameA').value.trim()||'Wohnmobil A',nameB=document.getElementById('rNameB').value.trim()||'Wohnmobil B';
+ function c(s){const p=N('rPrice'+s),y=N('rYears'+s),res=N('rResale'+s),run=(N('rInsurance'+s)+N('rTax'+s)+N('rFuel'+s)*12+N('rService'+s)+N('rOther'+s))*y,total=Math.max(0,p-res)+run;return{y,total,month:y?total/(y*12):0,run,dep:Math.max(0,p-res)}}const a=c('A'),b=c('B');updateGeneric('r',a,b,nameA,nameB,'Monat',[['Gesamtkosten',a.total,b.total],['Wertverlust',a.dep,b.dep],['Laufende Kosten',a.run,b.run]]);}
+function updateGeneric(pre,a,b,na,nb,period,rows){const valid=a.y>0&&b.y>0,w=a.total<=b.total?na:nb,d=Math.abs(a.total-b.total);document.getElementById(pre+'Winner').textContent=valid?w:'Noch offen';document.getElementById(pre+'Delta').textContent=valid?'▲ Finanziell im Vorteil':'Bitte Zeitraum für beide Optionen eingeben';document.getElementById(pre+'Metric1').textContent=E(valid?Math.abs(a.month-b.month):0);document.getElementById(pre+'Metric2').textContent=E(valid?d:0);document.getElementById(pre+'Chart').innerHTML=rows.map(r=>barRow(r[0],r[1],r[2],na,nb)).join('')}
+
+
+
+function calcRent(){
+  const nameA=document.getElementById('mNameA').value.trim()||'Wohnung A';
+  const nameB=document.getElementById('mNameB').value.trim()||'Wohnung B';
+
+  function c(s){
+    const base=N('mRent'+s);
+    const years=N('mYears'+s);
+    const deposit=N('mDeposit'+s);
+    const increase=N('mIncrease'+s)/100;
+    const parking=N('mParking'+s);
+    const other=N('mOther'+s);
+
+    let rentTotal=0;
+    let annualRent=(base+parking+other)*12;
+    const fullYears=Math.floor(years);
+    const partialYear=years-fullYears;
+    for(let y=0;y<fullYears;y++){
+      rentTotal+=annualRent;
+      annualRent*=1+increase;
+    }
+    if(partialYear>0)rentTotal+=annualRent*partialYear;
+    const total=rentTotal+deposit;
+    return {
+      y:years,
+      total,
+      month:years?total/(years*12):0,
+      rent:rentTotal,
+      deposit,
+      extras:(parking+other)*12*years
+    };
+  }
+
+  const a=c('A'),b=c('B');
+  const valid=a.y>0&&b.y>0;
+  const winner=a.total<=b.total?nameA:nameB;
+  const diffTotal=Math.abs(a.total-b.total);
+  const diffMonth=Math.abs(a.month-b.month);
+
+  document.getElementById('mWinner').textContent=valid?winner:'Noch offen';
+  document.getElementById('mDelta').textContent=valid?'▲ Finanziell im Vorteil':'Werte eingeben';
+  document.getElementById('mMetric1').textContent=E(valid?diffMonth:0);
+  document.getElementById('mMetric2').textContent=E(valid?diffTotal:0);
+
+  document.getElementById('mChart').innerHTML=
+    barRow('Gesamtkosten',a.total,b.total,nameA,nameB)+
+    barRow('Miete & laufende Kosten',a.rent,b.rent,nameA,nameB)+
+    barRow('Einmalkosten',a.deposit,b.deposit,nameA,nameB);
+}
+
+function resetModule(prefix){
+  const map={home:'page-home',rent:'page-rent',pv:'page-pv',rv:'page-rv'};
+  const page=document.getElementById(map[prefix]);
+  if(!page)return;
+  page.querySelectorAll('input').forEach(i=>i.value='');
+
+  const cfg={
+    home:['h',calcHome],
+    rent:['m',calcRent],
+    pv:['p',calcPV],
+    rv:['r',calcRV]
+  }[prefix];
+  if(!cfg)return;
+
+  const pre=cfg[0];
+  const winner=document.getElementById(pre+'Winner');
+  const delta=document.getElementById(pre+'Delta');
+  const m1=document.getElementById(pre+'Metric1');
+  const m2=document.getElementById(pre+'Metric2');
+  const chart=document.getElementById(pre+'Chart');
+  if(winner)winner.textContent='Noch offen';
+  if(delta)delta.textContent='Werte eingeben';
+  if(m1)m1.textContent=E(0);
+  if(m2)m2.textContent=E(0);
+  if(chart)chart.innerHTML='';
+  cfg[1]();
+}
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('#page-home input').forEach(e=>e.addEventListener('input',calcHome));document.querySelectorAll('#page-rent input').forEach(e=>e.addEventListener('input',calcRent));document.querySelectorAll('#page-pv input').forEach(e=>e.addEventListener('input',calcPV));document.querySelectorAll('#page-rv input').forEach(e=>e.addEventListener('input',calcRV));calcHome();calcRent();calcPV();calcRV();});
+
+function openPremiumReport(){
+  const m=document.getElementById('premiumReportModal');
+  if(m){m.classList.add('open');m.setAttribute('aria-hidden','false');}
+}
+function closePremiumReport(){
+  const m=document.getElementById('premiumReportModal');
+  if(m){m.classList.remove('open');m.setAttribute('aria-hidden','true');}
+}
+function prEsc(v){
+  return String(v??'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]});
+}
+function generatePremiumReport(){
+  const active=document.querySelector('.module-page.active') || document.getElementById('page-auto');
+  if(!active)return;
+  const navActive=document.querySelector('.module-tab.active');
+  const moduleName=navActive?navActive.textContent.trim():'LifeCost Vergleich';
+  const custom=(document.getElementById('premiumReportTitle')?.value||'').trim();
+  const title=custom||moduleName+' – Entscheidungsreport';
+
+  const inputs=[...active.querySelectorAll('input')].filter(i=>i.type!=='button' && i.value!=='');
+  const rows=inputs.map(i=>{
+    const wrap=i.closest('div');
+    const lab=wrap?.querySelector('label')?.textContent?.trim() || i.getAttribute('placeholder') || i.id;
+    return [lab,i.value];
+  });
+
+  const cards=[...active.querySelectorAll('.market-card')].map(c=>({
+    label:c.querySelector('small')?.textContent?.trim()||'',
+    value:c.querySelector('.value')?.textContent?.trim()||'',
+    delta:c.querySelector('.delta')?.textContent?.trim()||''
+  })).filter(x=>x.label||x.value);
+
+  const chartRows=[...active.querySelectorAll('.chart-row')].map(r=>{
+    const label=r.querySelector('.chart-label')?.textContent?.trim()||'Kostenposition';
+    const lines=[...r.querySelectorAll('.chart-line')].map(line=>({
+      name:line.querySelector('.chart-name')?.textContent?.trim()||'Option',
+      value:line.querySelector('.chart-value')?.textContent?.trim()||'',
+      width:line.querySelector('.chart-fill')?.style?.width||'0%',
+      cls:line.querySelector('.chart-fill')?.classList.contains('cheaper-bar')?'good':line.querySelector('.chart-fill')?.classList.contains('expensive-bar')?'bad':'neutral'
+    }));
+    return {label,lines};
+  });
+
+  const winner=cards[0]?.value||'Noch offen';
+  const advantage=cards[2]?.value||cards[1]?.value||'Noch offen';
+  const complete=winner && winner!=='Noch offen';
+
+  const scenarioText=complete
+    ? `Das Ergebnis spricht auf Basis deiner aktuellen Annahmen für <b>${prEsc(winner)}</b>. Prüfe vor einer endgültigen Entscheidung besonders jene Eingaben, die unsicher oder geschätzt sind. Ändere diese Werte in LifeCost bewusst nach oben und unten. Bleibt dieselbe Option vorne, ist deine Entscheidung robuster.`
+    : `Für einen belastbaren Szenario-Check solltest du zuerst beide Optionen vollständig ausfüllen. Danach verändere unsichere Annahmen bewusst nach oben und unten und beobachte, ob sich der Gewinner ändert.`;
+
+  const report=`<!doctype html><html lang="de"><head><meta charset="utf-8"><title>${prEsc(title)}</title>
+  <style>
+  @page{size:A4;margin:14mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#17263a;margin:0;background:#edf1f4}
+  .page{width:210mm;min-height:297mm;margin:18px auto;background:#fff;padding:18mm;box-shadow:0 12px 40px rgba(0,0,0,.08);page-break-after:always}.page:last-child{page-break-after:auto}
+  .cover{background:linear-gradient(145deg,#142e49,#285477);color:white;position:relative;overflow:hidden}.cover:after{content:"€";position:absolute;right:-5mm;top:-28mm;font-size:120mm;font-weight:900;opacity:.035}
+  .brand{font-weight:900;letter-spacing:1.5px}.gold{color:#f1cb72}.kicker{font-size:10px;font-weight:900;letter-spacing:1.3px;margin-top:38mm}.cover h1{font-size:34px;line-height:1.05;max-width:145mm;margin:7mm 0 4mm}.cover .lead{font-size:15px;line-height:1.55;color:rgba(255,255,255,.75);max-width:140mm}
+  .cover-result{margin-top:25mm;padding:8mm;border:1px solid rgba(255,255,255,.15);border-radius:5mm;background:rgba(255,255,255,.07)}.cover-result small{display:block;color:#f1cb72;font-weight:900}.cover-result b{font-size:27px;display:block;margin-top:2mm}
+  .cover-foot{position:absolute;left:18mm;bottom:18mm;color:rgba(255,255,255,.5);font-size:10px}
+  h2{font-size:25px;color:#18324f;margin:0 0 4mm}h3{font-size:15px;color:#18324f;margin:8mm 0 3mm}.sub{color:#73808c;line-height:1.5}.section-kicker{font-size:9px;color:#9b7621;font-weight:900;letter-spacing:1.2px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:3mm;margin:7mm 0}.card{border:1px solid #e4ded4;border-radius:4mm;padding:5mm;background:#fffdf8}.card small{font-size:8px;font-weight:900;color:#82765e}.card b{display:block;font-size:18px;margin-top:2mm}.goodtext{color:#16865a;font-size:10px;margin-top:1mm}
+  table{width:100%;border-collapse:collapse;font-size:10px}td{padding:2.6mm;border-bottom:1px solid #ece7de}td:first-child{color:#667581;width:62%}td:last-child{text-align:right;font-weight:700}
+  .chartbox{border:1px solid #e5dfd5;border-radius:4mm;padding:4mm;margin:3mm 0}.charttitle{font-weight:800;font-size:11px;margin-bottom:3mm}.line{display:grid;grid-template-columns:30mm 1fr 28mm;gap:3mm;align-items:center;margin:2mm 0;font-size:9px}.track{height:5mm;background:#edf0f2;border-radius:99px;overflow:hidden}.fill{height:100%;border-radius:99px;background:#8e9aa5}.fill.good{background:#1c9a68}.fill.bad{background:#d45c54}.val{text-align:right;font-weight:800}
+  .callout{padding:5mm;border-radius:4mm;background:#f3f7fa;border-left:1.5mm solid #2867d6;color:#526675;font-size:11px;line-height:1.55}.checklist{display:grid;gap:3mm;margin-top:5mm}.check{display:grid;grid-template-columns:8mm 1fr;gap:3mm;padding:4mm;border:1px solid #e5dfd5;border-radius:3mm}.tick{width:6mm;height:6mm;border:1px solid #b9c4cc;border-radius:50%}.check b{font-size:11px}.check p{font-size:9px;color:#71808c;margin:1mm 0 0;line-height:1.4}
+  .scenario{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3mm;margin-top:5mm}.scenario>div{padding:5mm;border-radius:4mm;border:1px solid #e4ded4}.scenario small{font-weight:900;color:#8a7651}.scenario b{display:block;margin-top:2mm}.scenario p{font-size:9px;color:#71808c;line-height:1.4}
+  .footer{margin-top:10mm;padding-top:3mm;border-top:1px solid #e5dfd5;font-size:8px;color:#929ba2}.printbar{max-width:210mm;margin:12px auto;display:flex;gap:8px}.printbar button{border:0;border-radius:10px;padding:11px 15px;font-weight:800;cursor:pointer;background:#2867d6;color:#fff}
+  @media print{body{background:#fff}.page{box-shadow:none;margin:0;width:auto;min-height:267mm}.printbar{display:none}}@media(max-width:800px){.page{width:auto;min-height:auto;margin:0;padding:24px}.cards,.scenario{grid-template-columns:1fr}}
+  </style></head><body>
+  <div class="printbar"><button onclick="window.print()">Als PDF speichern / drucken</button></div>
+
+  <section class="page cover">
+    <div class="brand">LIFECOST</div>
+    <div class="kicker gold">PREMIUM ENTSCHEIDUNGSREPORT · MVP-VORSCHAU</div>
+    <h1>${prEsc(title)}</h1>
+    <div class="lead">Eine strukturierte Übersicht deiner aktuellen Annahmen, Kosten und finanziellen Unterschiede. Damit du nicht nur eine Zahl siehst, sondern deine Entscheidung nachvollziehen kannst.</div>
+    <div class="cover-result"><small>AKTUELL FINANZIELL STÄRKERE WAHL</small><b>${prEsc(winner)}</b><span>${complete?'Auf Basis deiner eingegebenen Annahmen':'Bitte Vergleich vollständig ausfüllen'}</span></div>
+    <div class="cover-foot">${prEsc(moduleName)} · LifeCost Planungsreport</div>
+  </section>
+
+  <section class="page">
+    <div class="section-kicker">01 · ENTSCHEIDUNG AUF EINEN BLICK</div><h2>Was deine Zahlen aktuell sagen</h2>
+    <p class="sub">Diese Zusammenfassung basiert ausschließlich auf deinen aktuellen LifeCost-Eingaben. Sie ist keine Prognosegarantie, sondern eine transparente Entscheidungshilfe.</p>
+    <div class="cards">${cards.length?cards.map(x=>`<div class="card"><small>${prEsc(x.label)}</small><b>${prEsc(x.value)}</b><div class="goodtext">${prEsc(x.delta)}</div></div>`).join(''):'<div class="card"><small>ERGEBNIS</small><b>Noch offen</b></div>'}</div>
+    <h3>Deine Eingaben & Annahmen</h3>
+    ${rows.length?`<table>${rows.map(r=>`<tr><td>${prEsc(r[0])}</td><td>${prEsc(r[1])}</td></tr>`).join('')}</table>`:'<p class="sub">Noch keine Eingaben vorhanden.</p>'}
+    <div class="footer">LifeCost · Werte aus deinem aktuellen Vergleich</div>
+  </section>
+
+  <section class="page">
+    <div class="section-kicker">02 · KOSTENTREIBER</div><h2>Wo der Unterschied entsteht</h2>
+    <p class="sub">Die Balken zeigen die aktuell berechneten Positionen. Grün markiert die finanziell günstigere Seite einer Kostenposition, Rot die teurere.</p>
+    ${chartRows.length?chartRows.map(c=>`<div class="chartbox"><div class="charttitle">${prEsc(c.label)}</div>${c.lines.map(l=>`<div class="line"><span>${prEsc(l.name)}</span><div class="track"><div class="fill ${l.cls}" style="width:${prEsc(l.width)}"></div></div><span class="val">${prEsc(l.value)}</span></div>`).join('')}</div>`).join(''):'<p class="sub">Noch keine Diagrammdaten vorhanden.</p>'}
+    <div class="footer">LifeCost · Kostenpositionen im direkten Vergleich</div>
+  </section>
+
+  <section class="page">
+    <div class="section-kicker">03 · SZENARIO-CHECK</div><h2>Wie robust ist deine Entscheidung?</h2>
+    <div class="callout">${scenarioText}</div>
+    <div class="scenario">
+      <div><small>OPTIMISTISCH</small><b>Was läuft besser als gedacht?</b><p>Teste günstigere laufende Kosten, höheren Restwert oder bessere Erträge, sofern diese Annahmen für deinen Vergleich relevant sind.</p></div>
+      <div><small>REALISTISCH</small><b>Deine aktuelle Rechnung</b><p>Nutze Werte, die du belegen oder vernünftig schätzen kannst. Das ist dein Referenzszenario.</p></div>
+      <div><small>VORSICHTIG</small><b>Was wenn es teurer wird?</b><p>Teste höhere Kosten, niedrigeren Restwert oder schwächere Erträge. Bleibt der Gewinner gleich, ist das ein gutes Robustheitssignal.</p></div>
+    </div>
+    <h3>Vor deiner Entscheidung prüfen</h3>
+    <div class="checklist">
+      <div class="check"><div class="tick"></div><div><b>Sind Kaufpreis, Miete oder Anschaffungskosten vollständig?</b><p>Nebenkosten und einmalige Kosten können den Vergleich spürbar verändern.</p></div></div>
+      <div class="check"><div class="tick"></div><div><b>Sind laufende Kosten realistisch?</b><p>Nutze Rechnungen, Angebote oder Erfahrungswerte statt Wunschwerte.</p></div></div>
+      <div class="check"><div class="tick"></div><div><b>Welche Annahme ist am unsichersten?</b><p>Verändere genau diesen Wert in LifeCost und prüfe, ob der Gewinner wechselt.</p></div></div>
+      <div class="check"><div class="tick"></div><div><b>Gibt es nicht-finanzielle Gründe?</b><p>Lebensqualität, Flexibilität, Risiko und persönliche Prioritäten gehören bewusst neben die Zahlen.</p></div></div>
+    </div>
+    <div class="footer">LifeCost · Planungs- und Vergleichswerte, keine Finanz-, Steuer- oder Anlageberatung.</div>
+  </section>
+  <footer class="site-footer">
+  <div><b>LifeCost</b><span>Entscheidungen, die sich rechnen.</span></div>
+  <div class="footer-links"><button onclick="showLegal('impressum')">Impressum</button><button onclick="showLegal('datenschutz')">Datenschutz</button><button onclick="showLegal('hinweis')">Rechtlicher Hinweis</button></div>
+  <small>LifeCost liefert Planungs- und Vergleichswerte auf Basis deiner Eingaben. Keine Finanz-, Steuer- oder Anlageberatung.</small>
+</footer>
+<div id="legalModal" class="pr-modal" aria-hidden="true"><div class="pr-dialog"><button class="pr-close" onclick="closeLegal()">×</button><div id="legalContent"></div></div></div></body></html>`;
+
+  const w=window.open('','_blank');
+  if(!w){alert('Bitte Pop-ups für den Premium-Report erlauben.');return;}
+  w.document.open();w.document.write(report);w.document.close();
+  closePremiumReport();
+}
+
+
+function showLegal(type){
+ const content=document.getElementById('legalContent');
+ const data={
+  impressum:['Impressum','Vor der Veröffentlichung müssen hier Betreibername, ladungsfähige Anschrift und die gesetzlich erforderlichen Unternehmensangaben eingetragen werden.'],
+  datenschutz:['Datenschutz','Vor der Veröffentlichung muss eine passende Datenschutzerklärung ergänzt werden. Welche Angaben erforderlich sind, hängt unter anderem von Hosting, Analytics und Zahlungsanbieter ab.'],
+  hinweis:['Rechtlicher Hinweis','LifeCost ist eine Rechen- und Entscheidungshilfe. Ergebnisse beruhen auf Nutzereingaben und Annahmen und stellen keine Finanz-, Steuer-, Anlage- oder Rechtsberatung dar.']
+ };
+ const d=data[type]; content.innerHTML='<div class="pr-badge">LIFECOST</div><h2>'+d[0]+'</h2><p class="pr-lead">'+d[1]+'</p>';
+ const m=document.getElementById('legalModal');m.classList.add('open');m.setAttribute('aria-hidden','false');
+}
+function closeLegal(){const m=document.getElementById('legalModal');m.classList.remove('open');m.setAttribute('aria-hidden','true');}
+</script>
+<section class="sales-section">
+  <div>
+    <span class="sales-kicker">MEHR ALS NUR EINE ZAHL</span>
+    <h2>Deine Entscheidung zum Mitnehmen.</h2>
+    <p>Der kostenlose Vergleich zeigt dir das Ergebnis. Der Premium-Report macht daraus eine strukturierte Unterlage, die du speichern, ausdrucken oder gemeinsam mit anderen durchgehen kannst.</p>
+    <div class="sales-grid">
+      <div><b>01</b><h3>Klare Zusammenfassung</h3><p>Gewinner, Kostenvorteil und wichtigste Kennzahlen auf einen Blick.</p></div>
+      <div><b>02</b><h3>Kostentreiber verstehen</h3><p>Sieh, welche Positionen den Unterschied zwischen deinen Optionen verursachen.</p></div>
+      <div><b>03</b><h3>Entscheidung testen</h3><p>Szenario-Check und Prüfliste helfen dir, unsichere Annahmen zu hinterfragen.</p></div>
+    </div>
+    <button class="sales-button" onclick="openPremiumReport()">Premium-Report ansehen · 4,90 € geplant</button>
+    <small class="test-note">Testmodus: Noch keine Zahlung erforderlich.</small>
+  </div>
+</section>
+<div id="premiumReportModal" class="pr-modal" aria-hidden="true">
+  <div class="pr-dialog">
+    <button class="pr-close" onclick="closePremiumReport()" aria-label="Schließen">×</button>
+    <div class="pr-badge">LIFECOST PREMIUM REPORT</div>
+    <h2>Deine Entscheidung als echte Unterlage.</h2>
+    <p class="pr-lead">Der Premium-Report macht aus deinem Vergleich eine strukturierte Entscheidungsunterlage: Ergebnis, Kennzahlen, Annahmen, Kostentreiber, Szenario-Check und klare nächste Prüfpunkte. In dieser Testversion kannst du den vollständigen Report noch kostenlos ansehen. Der Checkout ist bereits vorbereitet und wird erst bei Veröffentlichung aktiviert.</p>
+    <div class="pr-features">
+      <span>✓ Gewinner & Kostenvorteil</span>
+      <span>✓ Eingaben und Annahmen</span>
+      <span>✓ Kostenvergleich</span>
+      <span>✓ Entscheidungshinweise</span><span>✓ Szenario-Check</span><span>✓ Persönliche Prüfliste</span>
+    </div>
+    <label class="pr-label">Optionaler Titel für deinen Report</label>
+    <input id="premiumReportTitle" class="pr-input" type="text" placeholder="z. B. Golf vs. BMW – meine Entscheidung">
+    <div class="pr-pricebox"><div><small>GEPLANTER EINFÜHRUNGSPREIS</small><b>4,90 €</b><span>einmalig · kein Abo</span></div><div class="pr-lock">🔒</div></div>
+    <div class="pr-actions">
+      <button onclick="generatePremiumReport()">Kostenlose Test-Vorschau öffnen</button>
+      <button class="secondary" onclick="closePremiumReport()">Abbrechen</button>
+    </div>
+    <small>Hinweis: Noch keine Bezahlfunktion. Wir testen zuerst das Produkt und den Report selbst.</small>
+  </div>
+</div>
+
+</body></html>
