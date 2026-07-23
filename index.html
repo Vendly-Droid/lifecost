@@ -1534,7 +1534,22 @@ function continueToPremium(){
     <small>Hinweis: Noch keine Bezahlfunktion. Wir testen zuerst das Produkt und den Report selbst.</small>
   </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const params = new URLSearchParams(window.location.search);
 
+  if (params.get('checkout') === 'success') {
+    const s = document.getElementById('checkoutSuccessModal');
+
+    if (s) {
+      s.classList.add('open');
+      s.setAttribute('aria-hidden', 'false');
+    }
+
+    history.replaceState(null, '', window.location.pathname);
+  }
+});
+</script>
 <!-- Cloudflare Web Analytics -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5a99c670c5334eb2a09e32b9ed0d0d29"}'></script>
 <!-- End Cloudflare Web Analytics -->
