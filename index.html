@@ -1386,25 +1386,62 @@ function closeCheckout(){
   const m=document.getElementById('checkoutModal');
   if(m){ m.classList.remove('open'); m.setAttribute('aria-hidden','true'); }
 }
-function startTestCheckout(){
+async function startTestCheckout(){
   const email=(document.getElementById('checkoutEmail')?.value||'').trim();
   const terms=!!document.getElementById('checkoutTerms')?.checked;
   const err=document.getElementById('checkoutError');
 
   if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    if(err){ err.style.display='block'; err.textContent='Bitte gib eine gültige E-Mail-Adresse ein.'; }
+    if(err){
+      err.style.display='block';
+      err.textContent='Bitte gib eine gültige E-Mail-Adresse ein.';
+    }
     return;
   }
+
   if(!terms){
-    if(err){ err.style.display='block'; err.textContent='Bitte bestätige zuerst den Testhinweis.'; }
+    if(err){
+      err.style.display='block';
+      err.textContent='Bitte bestätige zuerst den Hinweis.';
+    }
     return;
   }
 
-  if(err){ err.style.display='none'; }
-  closeCheckout();
+  if(err){
+    err.style.display='none';
+  }
 
-  const s=document.getElementById('checkoutSuccessModal');
-  if(s){ s.classList.add('open'); s.setAttribute('aria-hidden','false'); }
+  try{
+    const response = await fetch(
+      'https://lifecost-stripe-checkou.c669dd4zby.workers.dev/create-checkout-session',
+      {
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+          email:email,
+          priceId:'price_1TwIpaCIDFp8zhSFUVFQiDTW',
+          successUrl:window.location.origin + window.location.pathname + '?checkout=success',
+          cancelUrl:window.location.origin + window.location.pathname + '?checkout=cancel'
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if(!response.ok || !data.url){
+      throw new Error(data.error || 'Stripe Checkout konnte nicht gestartet werden.');
+    }
+
+    window.location.href = data.url;
+
+  }catch(error){
+    if(err){
+      err.style.display='block';
+      err.textContent='Stripe-Checkout konnte nicht gestartet werden: ' + error.message;
+    }
+  }
 }
 function continueToPremium(){
   const s=document.getElementById('checkoutSuccessModal');
