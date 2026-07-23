@@ -1582,7 +1582,17 @@ document.addEventListener('DOMContentLoaded', async function () {
     alert('Die Zahlungsbestätigung konnte nicht geprüft werden.');
     console.error(error);
   }
-});
+});function continueToPremium(){
+  localStorage.setItem('lifecost_premium','true');
+
+  const s=document.getElementById('checkoutSuccessModal');
+  if(s){
+    s.classList.remove('open');
+    s.setAttribute('aria-hidden','true');
+  }
+
+  openPremiumReport();
+}
 </script>
 <!-- Cloudflare Web Analytics -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5a99c670c5334eb2a09e32b9ed0d0d29"}'></script>
