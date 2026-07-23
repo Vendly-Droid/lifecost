@@ -641,6 +641,17 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
 .sales-section{max-width:1188px;margin:35px auto;padding:38px;border-radius:26px;background:#173450;color:#fff}.sales-section h2{font-size:31px;margin:8px 0}.sales-section>div>p{max-width:760px;color:rgba(255,255,255,.7);line-height:1.6}.sales-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:25px 0}.sales-grid>div{padding:18px;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.06);border-radius:15px}.sales-grid b{color:#efc96d}.sales-grid h3{margin:8px 0 5px}.sales-grid p{font-size:12px;color:rgba(255,255,255,.63);line-height:1.45}.sales-button{background:linear-gradient(135deg,#b98218,#d4a33a)!important}.test-note{display:block;margin-top:8px;color:rgba(255,255,255,.48)}
 .site-footer{max-width:1188px;margin:20px auto 40px;padding:24px 16px;border-top:1px solid #ded8ce;display:grid;gap:13px;color:#71808b}.site-footer>div:first-child{display:flex;gap:10px;align-items:baseline}.site-footer b{color:#18324f;font-size:18px}.footer-links{display:flex;gap:8px;flex-wrap:wrap}.footer-links button{background:transparent!important;color:#667681!important;box-shadow:none!important;border:1px solid #ddd7cd!important;padding:7px 10px!important}.site-footer small{font-size:10px}
 @media(max-width:760px){.public-hero{margin:14px;padding:34px 24px}.public-hero h2{font-size:36px}.sales-section{margin:24px 14px;padding:25px}.sales-grid{grid-template-columns:1fr}}
+
+.checkout-dialog{max-width:560px}
+.checkout-summary{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#fff8e8,#fffdf8);border:1px solid #ead7a4;border-radius:16px;padding:16px 18px;margin:18px 0}
+.checkout-summary small,.checkout-summary span{display:block;color:#806f51}
+.checkout-summary b{display:block;font-size:34px;color:#18324f;margin:3px 0}
+.checkout-lock{font-size:28px}
+.checkout-check{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;margin:16px 0;color:#60707c;font-size:12px;line-height:1.45}
+.checkout-check input{width:auto;margin-top:2px}
+.checkout-error{background:#fff0ee;border:1px solid #efc5c1;color:#9f3d36;border-radius:10px;padding:10px 12px;font-size:12px;margin:10px 0}
+.success-mark{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:#e7f7ee;color:#16865a;font-size:28px;font-weight:900;margin-bottom:12px}
+
 </style></head><body>
 <header><div class="brand"><div class="logo">L</div><div><h1>LifeCost</h1><div class="sub">Deine großen Entscheidungen. Klar gerechnet.</div></div></div><div class="sub">FINANCIAL DECISION DASHBOARD</div></header>
 <section class="public-hero">
@@ -697,7 +708,7 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
   <div class="step-heading"><span>1</span><div><b>Deine Autos</b><small>Du brauchst keine perfekten Zahlen. Starte mit dem, was du weißt.</small></div></div>
   <div class="actions">
     <button onclick="calculate()">Kosten vergleichen</button>
-    <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openPremiumReport()">★ Premium-Report erstellen</button>
+    <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openCheckout()">★ Premium-Report erstellen</button>
     <button class="secondary" onclick="resetAll()">Zurücksetzen</button>
   </div>
 
@@ -804,7 +815,7 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
 <div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
 <div class="actions module-actions">
       <button onclick="calcHome()">Kosten vergleichen</button>
-      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openPremiumReport()">★ Premium-Report erstellen</button>
+      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openCheckout()">★ Premium-Report erstellen</button>
       <button class="secondary" onclick="resetModule('home')">Zurücksetzen</button>
     </div>
 <div class="step-heading"><span>1</span><div><b>Deine zwei Kaufoptionen</b><small>Vergleiche Haus oder Wohnung mit deinen eigenen Zahlen.</small></div></div>
@@ -842,7 +853,7 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
   <div class="ticker"><span>PORTFOLIO <b>Mietwohnungs-Vergleich</b></span><span>MODELL <b>Wohnkosten</b></span><span>STATUS <b>Live-Berechnung</b></span><span>FOKUS <b>Monatliche Belastung</b></span></div>
 <div class="actions module-actions">
       <button onclick="calcRent()">Kosten vergleichen</button>
-      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openPremiumReport()">★ Premium-Report erstellen</button>
+      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openCheckout()">★ Premium-Report erstellen</button>
       <button class="secondary" onclick="resetModule('rent')">Zurücksetzen</button>
     </div>
 
@@ -909,7 +920,7 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
 <div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
 <div class="actions module-actions">
       <button onclick="calcPV()">Kosten vergleichen</button>
-      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openPremiumReport()">★ Premium-Report erstellen</button>
+      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openCheckout()">★ Premium-Report erstellen</button>
       <button class="secondary" onclick="resetModule('pv')">Zurücksetzen</button>
     </div>
 <div class="step-heading"><span>1</span><div><b>Deine zwei Optionen</b><small>Trage die Werte ein, die du kennst. Du kannst alles jederzeit ändern.</small></div></div>
@@ -939,7 +950,7 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
 <div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
 <div class="actions module-actions">
       <button onclick="calcRV()">Kosten vergleichen</button>
-      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openPremiumReport()">★ Premium-Report erstellen</button>
+      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openCheckout()">★ Premium-Report erstellen</button>
       <button class="secondary" onclick="resetModule('rv')">Zurücksetzen</button>
     </div>
 <div class="step-heading"><span>1</span><div><b>Deine zwei Optionen</b><small>Trage die Werte ein, die du kennst. Du kannst alles jederzeit ändern.</small></div></div>
@@ -1358,6 +1369,44 @@ function showLegal(type){
  const m=document.getElementById('legalModal');m.classList.add('open');m.setAttribute('aria-hidden','false');
 }
 function closeLegal(){const m=document.getElementById('legalModal');m.classList.remove('open');m.setAttribute('aria-hidden','true');}
+
+
+function openCheckout(){
+  const m=document.getElementById('checkoutModal');
+  if(!m){ alert('Checkout konnte nicht geöffnet werden.'); return; }
+  m.classList.add('open');
+  m.setAttribute('aria-hidden','false');
+}
+function closeCheckout(){
+  const m=document.getElementById('checkoutModal');
+  if(m){ m.classList.remove('open'); m.setAttribute('aria-hidden','true'); }
+}
+function startTestCheckout(){
+  const email=(document.getElementById('checkoutEmail')?.value||'').trim();
+  const terms=!!document.getElementById('checkoutTerms')?.checked;
+  const err=document.getElementById('checkoutError');
+
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    if(err){ err.style.display='block'; err.textContent='Bitte gib eine gültige E-Mail-Adresse ein.'; }
+    return;
+  }
+  if(!terms){
+    if(err){ err.style.display='block'; err.textContent='Bitte bestätige zuerst den Testhinweis.'; }
+    return;
+  }
+
+  if(err){ err.style.display='none'; }
+  closeCheckout();
+
+  const s=document.getElementById('checkoutSuccessModal');
+  if(s){ s.classList.add('open'); s.setAttribute('aria-hidden','false'); }
+}
+function continueToPremium(){
+  const s=document.getElementById('checkoutSuccessModal');
+  if(s){ s.classList.remove('open'); s.setAttribute('aria-hidden','true'); }
+  openPremiumReport();
+}
+
 </script>
 <section class="sales-section">
   <div>
@@ -1369,10 +1418,58 @@ function closeLegal(){const m=document.getElementById('legalModal');m.classList.
       <div><b>02</b><h3>Kostentreiber verstehen</h3><p>Sieh, welche Positionen den Unterschied zwischen deinen Optionen verursachen.</p></div>
       <div><b>03</b><h3>Entscheidung testen</h3><p>Szenario-Check und Prüfliste helfen dir, unsichere Annahmen zu hinterfragen.</p></div>
     </div>
-    <button class="sales-button" onclick="openPremiumReport()">Premium-Report ansehen · 4,90 € geplant</button>
+    <button class="sales-button" onclick="openCheckout()">Premium-Report ansehen · 4,90 € geplant</button>
     <small class="test-note">Testmodus: Noch keine Zahlung erforderlich.</small>
   </div>
 </section>
+
+<div id="checkoutModal" class="pr-modal" aria-hidden="true">
+  <div class="pr-dialog checkout-dialog">
+    <button class="pr-close" onclick="closeCheckout()" aria-label="Schließen">×</button>
+    <div class="pr-badge">LIFECOST PREMIUM</div>
+    <h2>Premium-Report freischalten</h2>
+    <p class="pr-lead">Einmalig bezahlen, vollständigen Entscheidungsreport erstellen und als PDF speichern.</p>
+
+    <div class="checkout-summary">
+      <div>
+        <small>PREMIUM-REPORT</small>
+        <b>4,90 €</b>
+        <span>einmalig · kein Abo</span>
+      </div>
+      <div class="checkout-lock">🔒</div>
+    </div>
+
+    <label class="pr-label">E-Mail für deine Bestätigung</label>
+    <input id="checkoutEmail" class="pr-input" type="email" placeholder="name@beispiel.at">
+
+    <label class="checkout-check">
+      <input id="checkoutTerms" type="checkbox">
+      <span>Ich weiß, dass dies aktuell ein Testcheckout ist und noch keine echte Zahlung ausgelöst wird.</span>
+    </label>
+
+    <div id="checkoutError" class="checkout-error" style="display:none"></div>
+
+    <div class="pr-actions">
+      <button onclick="startTestCheckout()">Test-Checkout für 4,90 € starten</button>
+      <button class="secondary" onclick="closeCheckout()">Abbrechen</button>
+    </div>
+
+    <small>TESTMODUS: Es wird kein Geld abgebucht.</small>
+  </div>
+</div>
+
+<div id="checkoutSuccessModal" class="pr-modal" aria-hidden="true">
+  <div class="pr-dialog checkout-dialog">
+    <div class="success-mark">✓</div>
+    <div class="pr-badge">TEST-CHECKOUT ERFOLGREICH</div>
+    <h2>Premium ist freigeschaltet.</h2>
+    <p class="pr-lead">So sieht später der Ablauf nach einer bestätigten echten Zahlung aus.</p>
+    <div class="pr-actions">
+      <button onclick="continueToPremium()">Premium-Report erstellen</button>
+    </div>
+  </div>
+</div>
+
 <div id="premiumReportModal" class="pr-modal" aria-hidden="true">
   <div class="pr-dialog">
     <button class="pr-close" onclick="closePremiumReport()" aria-label="Schließen">×</button>
