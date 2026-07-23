@@ -657,8 +657,31 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
 .checkout-error{background:#fff0ee;border:1px solid #efc5c1;color:#9f3d36;border-radius:10px;padding:10px 12px;font-size:12px;margin:10px 0}
 .success-mark{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:#e7f7ee;color:#16865a;font-size:28px;font-weight:900;margin-bottom:12px}
 
+
+.premium-status{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 11px;border-radius:999px;
+  font-size:11px;font-weight:900;letter-spacing:.8px;
+  border:1px solid #ddd7cd;background:#f3f1eb;color:#7b6f5c;
+}
+.premium-status.active{
+  background:#e7f7ee;border-color:#bfe7cf;color:#13744c;
+}
+.premium-status.active:before{content:"✓";font-size:12px}
+.premium-active-note{
+  margin-top:10px;padding:10px 12px;border-radius:10px;
+  background:#eaf8f1;border:1px solid #cfeedd;color:#176b45;
+  font-size:12px;font-weight:700;
+}
+
 </style></head><body>
-<header><div class="brand"><div class="logo">L</div><div><h1>LifeCost</h1><div class="sub">Deine großen Entscheidungen. Klar gerechnet.</div></div></div><div class="sub">FINANCIAL DECISION DASHBOARD</div></header>
+<header>
+<div class="brand"><div class="logo">L</div><div><h1>LifeCost</h1><div class="sub">Deine großen Entscheidungen. Klar gerechnet.</div></div></div>
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+  <div id="premiumStatusBadge" class="premium-status free">FREE</div>
+  <div class="sub">FINANCIAL DECISION DASHBOARD</div>
+</div>
+</header>
 <section class="public-hero">
   <div class="public-kicker">LIFECOST · KOSTENLOS STARTEN</div>
   <h2>Große Entscheidungen.<br><span>Klar gerechnet.</span></h2>
@@ -713,7 +736,7 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
   <div class="step-heading"><span>1</span><div><b>Deine Autos</b><small>Du brauchst keine perfekten Zahlen. Starte mit dem, was du weißt.</small></div></div>
   <div class="actions">
     <button onclick="calculate()">Kosten vergleichen</button>
-    <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openCheckout()">★ Premium-Report erstellen</button>
+    <button class="premium-btn" onclick="openCheckout()">★ Premium-Report mit aktuellen Daten erstellen</button>
     <button class="secondary" onclick="resetAll()">Zurücksetzen</button>
   </div>
 
@@ -820,7 +843,7 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
 <div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
 <div class="actions module-actions">
       <button onclick="calcHome()">Kosten vergleichen</button>
-      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openCheckout()">★ Premium-Report erstellen</button>
+      <button class="premium-btn" onclick="openCheckout()">★ Premium-Report mit aktuellen Daten erstellen</button>
       <button class="secondary" onclick="resetModule('home')">Zurücksetzen</button>
     </div>
 <div class="step-heading"><span>1</span><div><b>Deine zwei Kaufoptionen</b><small>Vergleiche Haus oder Wohnung mit deinen eigenen Zahlen.</small></div></div>
@@ -858,7 +881,7 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
   <div class="ticker"><span>PORTFOLIO <b>Mietwohnungs-Vergleich</b></span><span>MODELL <b>Wohnkosten</b></span><span>STATUS <b>Live-Berechnung</b></span><span>FOKUS <b>Monatliche Belastung</b></span></div>
 <div class="actions module-actions">
       <button onclick="calcRent()">Kosten vergleichen</button>
-      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openCheckout()">★ Premium-Report erstellen</button>
+      <button class="premium-btn" onclick="openCheckout()">★ Premium-Report mit aktuellen Daten erstellen</button>
       <button class="secondary" onclick="resetModule('rent')">Zurücksetzen</button>
     </div>
 
@@ -925,7 +948,7 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
 <div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
 <div class="actions module-actions">
       <button onclick="calcPV()">Kosten vergleichen</button>
-      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openCheckout()">★ Premium-Report erstellen</button>
+      <button class="premium-btn" onclick="openCheckout()">★ Premium-Report mit aktuellen Daten erstellen</button>
       <button class="secondary" onclick="resetModule('pv')">Zurücksetzen</button>
     </div>
 <div class="step-heading"><span>1</span><div><b>Deine zwei Optionen</b><small>Trage die Werte ein, die du kennst. Du kannst alles jederzeit ändern.</small></div></div>
@@ -955,7 +978,7 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
 <div class="attention-note"><span class="attention-dot"></span><span>Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.</span></div>
 <div class="actions module-actions">
       <button onclick="calcRV()">Kosten vergleichen</button>
-      <button onclick="window.print()">PDF speichern / drucken</button><button class="premium-btn" onclick="openCheckout()">★ Premium-Report erstellen</button>
+      <button class="premium-btn" onclick="openCheckout()">★ Premium-Report mit aktuellen Daten erstellen</button>
       <button class="secondary" onclick="resetModule('rv')">Zurücksetzen</button>
     </div>
 <div class="step-heading"><span>1</span><div><b>Deine zwei Optionen</b><small>Trage die Werte ein, die du kennst. Du kannst alles jederzeit ändern.</small></div></div>
@@ -1377,6 +1400,11 @@ function closeLegal(){const m=document.getElementById('legalModal');m.classList.
 
 
 function openCheckout(){
+  if(localStorage.getItem('lifecost_premium') === 'true'){
+    openPremiumReport();
+    return;
+  }
+
   const m=document.getElementById('checkoutModal');
   if(!m){
     alert('Checkout konnte nicht geöffnet werden.');
@@ -1447,8 +1475,63 @@ async function startTestCheckout(){
     }
   }
 }
+
+function updatePremiumUI(){
+  const premiumActive = localStorage.getItem('lifecost_premium') === 'true';
+
+  const badge = document.getElementById('premiumStatusBadge');
+  if(badge){
+    badge.textContent = premiumActive ? 'PREMIUM AKTIV' : 'FREE';
+    badge.classList.toggle('active', premiumActive);
+    badge.classList.toggle('free', !premiumActive);
+  }
+
+  document.querySelectorAll('.premium-btn').forEach(function(btn){
+    btn.textContent = premiumActive
+      ? '★ Premium aktiv – Report öffnen'
+      : '★ Premium-Report freischalten';
+  });
+
+  document.querySelectorAll('.sales-button').forEach(function(btn){
+    btn.textContent = premiumActive
+      ? 'Premium aktiv – Report mit aktuellen Daten öffnen'
+      : 'Premium-Report freischalten · 4,90 €';
+  });
+
+  const premiumModal = document.getElementById('premiumReportModal');
+  if(premiumModal){
+    const priceBox = premiumModal.querySelector('.pr-pricebox');
+    if(priceBox) priceBox.style.display = premiumActive ? 'none' : '';
+
+    const primary = premiumModal.querySelector('.pr-actions button:not(.secondary)');
+    if(primary){
+      primary.textContent = premiumActive
+        ? 'Premium-Report mit aktuellen Daten erstellen'
+        : 'Premium-Report erstellen';
+    }
+
+    let note = premiumModal.querySelector('.premium-active-note');
+    if(premiumActive){
+      if(!note){
+        note = document.createElement('div');
+        note.className = 'premium-active-note';
+        note.textContent = '✓ Premium ist aktiv. Du kannst deine Eingaben jederzeit ändern und den Report mit den aktuellen Daten neu erstellen.';
+        const actions = premiumModal.querySelector('.pr-actions');
+        if(actions) actions.parentNode.insertBefore(note, actions);
+      }
+    }else if(note){
+      note.remove();
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  updatePremiumUI();
+});
+
 function continueToPremium(){
   localStorage.setItem('lifecost_premium','true');
+  updatePremiumUI();
   const s=document.getElementById('checkoutSuccessModal');
   if(s){ s.classList.remove('open'); s.setAttribute('aria-hidden','true'); }
   openPremiumReport();
@@ -1542,7 +1625,7 @@ function restoreLifeCostState(){
     <h2>Premium ist freigeschaltet.</h2>
     <p class="pr-lead">Deine Zahlung wurde bestätigt. Dein Premium-Report ist freigeschaltet.</p>
     <div class="pr-actions">
-      <button onclick="continueToPremium()">Premium-Report erstellen</button>
+      <button onclick="continueToPremium()">Premium-Report mit aktuellen Daten erstellen</button>
     </div>
   </div>
 </div>
@@ -1563,10 +1646,10 @@ function restoreLifeCostState(){
     <input id="premiumReportTitle" class="pr-input" type="text" placeholder="z. B. Golf vs. BMW – meine Entscheidung">
     <div class="pr-pricebox"><div><small>PREMIUM-PREIS</small><b>4,90 €</b><span>einmalig · kein Abo</span></div><div class="pr-lock">🔒</div></div>
     <div class="pr-actions">
-      <button onclick="generatePremiumReport()">Premium-Report erstellen</button>
+      <button onclick="generatePremiumReport()">Premium-Report mit aktuellen Daten erstellen</button>
       <button class="secondary" onclick="closePremiumReport()">Abbrechen</button>
     </div>
-    <small>Premium wurde nach bestätigter Zahlung freigeschaltet.</small>
+    <small>Premium ist aktiv. Ändere deine Eingaben jederzeit und erstelle den Report anschließend neu.</small>
   </div>
 </div>
 <script>
@@ -1603,6 +1686,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     if (response.ok && data.paid === true) {
       localStorage.setItem('lifecost_premium', 'true');
+      updatePremiumUI();
 
       history.replaceState(null, '', window.location.pathname);
 
