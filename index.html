@@ -616,9 +616,9 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
 .module-actions button:first-child{background:linear-gradient(135deg,#2867d6,#3979e4)}
 
 .premium-btn{background:linear-gradient(135deg,#b98218,#d4a33a)!important;color:#fff!important;border:none!important;box-shadow:0 8px 20px rgba(185,130,24,.18)!important}
-.pr-modal{display:none;position:fixed;inset:0;background:rgba(12,25,38,.58);z-index:9999;place-items:center;padding:20px}
+.pr-modal{display:none;position:fixed;inset:0;background:rgba(12,25,38,.58);z-index:9999;place-items:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .pr-modal.open{display:grid}
-.pr-dialog{position:relative;width:min(620px,100%);background:#fffdf8;border-radius:24px;padding:30px;box-shadow:0 28px 80px rgba(0,0,0,.28);border:1px solid #eadbb8}
+.pr-dialog{position:relative;width:min(620px,100%);background:#fffdf8;border-radius:24px;padding:30px;box-shadow:0 28px 80px rgba(0,0,0,.28);border:1px solid #eadbb8;max-height:calc(100dvh - 40px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .pr-close{position:absolute;right:13px;top:10px;background:transparent!important;color:#6d7983!important;box-shadow:none!important;font-size:26px;padding:3px 9px}
 .pr-badge{display:inline-block;font-size:10px;font-weight:900;letter-spacing:1.2px;color:#946f1e;background:#fff2ca;padding:7px 10px;border-radius:999px}
 .pr-dialog h2{font-size:28px;color:#18324f;margin:13px 0 7px}
@@ -629,7 +629,12 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
 .pr-input{width:100%;box-sizing:border-box}
 .pr-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
 .pr-dialog>small{display:block;color:#8b959e;margin-top:14px;line-height:1.4}
-@media(max-width:650px){.pr-features{grid-template-columns:1fr}}
+@media(max-width:650px){
+  .pr-features{grid-template-columns:1fr}
+  .pr-modal{place-items:start center;padding:10px}
+  .pr-dialog{width:100%;max-height:calc(100dvh - 20px);padding:24px 18px 32px;border-radius:18px}
+  .pr-actions{padding-bottom:max(8px,env(safe-area-inset-bottom))}
+}
 
 
 .public-hero{max-width:1188px;margin:26px auto 24px;padding:52px 48px;border-radius:28px;background:linear-gradient(135deg,#132d48,#285579);color:#fff;box-shadow:0 24px 60px rgba(24,50,79,.17);position:relative;overflow:hidden}
