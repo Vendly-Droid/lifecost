@@ -1377,12 +1377,11 @@ function closeLegal(){const m=document.getElementById('legalModal');m.classList.
 
 
 function openCheckout(){
-  if(localStorage.getItem('lifecost_premium') === 'true'){
-    openPremiumReport();
+  const m=document.getElementById('checkoutModal');
+  if(!m){
+    alert('Checkout konnte nicht geöffnet werden.');
     return;
   }
-  const m=document.getElementById('checkoutModal');
-  if(!m){ alert('Checkout konnte nicht geöffnet werden.'); return; }
   m.classList.add('open');
   m.setAttribute('aria-hidden','false');
 }
