@@ -1400,14 +1400,9 @@ function closeLegal(){const m=document.getElementById('legalModal');m.classList.
 
 
 function openCheckout(){
-  if(localStorage.getItem('lifecost_premium') === 'true'){
-    openPremiumReport();
-    return;
-  }
-
   const m=document.getElementById('checkoutModal');
   if(!m){
-    alert('Checkout konnte nicht geöffnet werden.');
+    alert('Premium ist derzeit noch nicht verfügbar.');
     return;
   }
   m.classList.add('open');
@@ -1418,111 +1413,27 @@ function closeCheckout(){
   if(m){ m.classList.remove('open'); m.setAttribute('aria-hidden','true'); }
 }
 async function startTestCheckout(){
-  const email=(document.getElementById('checkoutEmail')?.value||'').trim();
-  const terms=!!document.getElementById('checkoutTerms')?.checked;
   const err=document.getElementById('checkoutError');
-
-  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    if(err){
-      err.style.display='block';
-      err.textContent='Bitte gib eine gültige E-Mail-Adresse ein.';
-    }
-    return;
-  }
-
-  if(!terms){
-    if(err){
-      err.style.display='block';
-      err.textContent='Bitte bestätige zuerst den Hinweis.';
-    }
-    return;
-  }
-
   if(err){
-    err.style.display='none';
+    err.style.display='block';
+    err.textContent='Premium-Zahlungen sind derzeit deaktiviert. LifeCost läuft aktuell kostenlos.';
   }
-
-  try{
-    const response = await fetch(
-      'https://lifecost-stripe-checkou.c669dd4zby.workers.dev/create-checkout-session',
-      {
-        method:'POST',
-        headers:{
-          'Content-Type':'application/json'
-        },
-        body:JSON.stringify({
-          email:email,
-          priceId:'price_1TwIpaCIDFp8zhSFUVFQiDTW',
-          successUrl:window.location.origin + window.location.pathname + '?checkout=success',
-          cancelUrl:window.location.origin + window.location.pathname + '?checkout=cancel'
-        })
-      }
-    );
-
-    const data = await response.json();
-
-    if(!response.ok || !data.url){
-      throw new Error(data.error || 'Stripe Checkout konnte nicht gestartet werden.');
-    }
-
-    saveLifeCostState();
-    window.location.href = data.url;
-
-  }catch(error){
-    if(err){
-      err.style.display='block';
-      err.textContent='Stripe-Checkout konnte nicht gestartet werden: ' + error.message;
-    }
-  }
+  return;
 }
 
 function updatePremiumUI(){
-  const premiumActive = localStorage.getItem('lifecost_premium') === 'true';
-
-  const badge = document.getElementById('premiumStatusBadge');
+  const badge=document.getElementById('premiumStatusBadge');
   if(badge){
-    badge.textContent = premiumActive ? 'PREMIUM AKTIV' : 'FREE';
-    badge.classList.toggle('active', premiumActive);
-    badge.classList.toggle('free', !premiumActive);
+    badge.textContent='FREE';
+    badge.classList.remove('active');
+    badge.classList.add('free');
   }
-
   document.querySelectorAll('.premium-btn').forEach(function(btn){
-    btn.textContent = premiumActive
-      ? '★ Premium aktiv – Report öffnen'
-      : '★ Premium-Report freischalten';
+    btn.textContent='★ Premium bald verfügbar';
   });
-
   document.querySelectorAll('.sales-button').forEach(function(btn){
-    btn.textContent = premiumActive
-      ? 'Premium aktiv – Report mit aktuellen Daten öffnen'
-      : 'Premium-Report freischalten · 4,90 €';
+    btn.textContent='Premium bald verfügbar';
   });
-
-  const premiumModal = document.getElementById('premiumReportModal');
-  if(premiumModal){
-    const priceBox = premiumModal.querySelector('.pr-pricebox');
-    if(priceBox) priceBox.style.display = premiumActive ? 'none' : '';
-
-    const primary = premiumModal.querySelector('.pr-actions button:not(.secondary)');
-    if(primary){
-      primary.textContent = premiumActive
-        ? 'Premium-Report mit aktuellen Daten erstellen'
-        : 'Premium-Report erstellen';
-    }
-
-    let note = premiumModal.querySelector('.premium-active-note');
-    if(premiumActive){
-      if(!note){
-        note = document.createElement('div');
-        note.className = 'premium-active-note';
-        note.textContent = '✓ Premium ist aktiv. Du kannst deine Eingaben jederzeit ändern und den Report mit den aktuellen Daten neu erstellen.';
-        const actions = premiumModal.querySelector('.pr-actions');
-        if(actions) actions.parentNode.insertBefore(note, actions);
-      }
-    }else if(note){
-      note.remove();
-    }
-  }
 }
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -1578,8 +1489,8 @@ function restoreLifeCostState(){
       <div><b>02</b><h3>Kostentreiber verstehen</h3><p>Sieh, welche Positionen den Unterschied zwischen deinen Optionen verursachen.</p></div>
       <div><b>03</b><h3>Entscheidung testen</h3><p>Szenario-Check und Prüfliste helfen dir, unsichere Annahmen zu hinterfragen.</p></div>
     </div>
-    <button class="sales-button" onclick="openCheckout()">Premium-Report freischalten · 4,90 €</button>
-    <small class="test-note">Einmalig 4,90 € · kein Abo</small>
+    <button class="sales-button" onclick="openCheckout()">Premium kommt später · 4,90 €</button>
+    <small class="test-note">Derzeit kostenlos · Premium später verfügbar</small>
   </div>
 </section>
 
@@ -1587,8 +1498,8 @@ function restoreLifeCostState(){
   <div class="pr-dialog checkout-dialog">
     <button class="pr-close" onclick="closeCheckout()" aria-label="Schließen">×</button>
     <div class="pr-badge">LIFECOST PREMIUM</div>
-    <h2>Premium-Report freischalten</h2>
-    <p class="pr-lead">Einmalig bezahlen, vollständigen Entscheidungsreport erstellen und als PDF speichern.</p>
+    <h2>Premium kommt später</h2>
+    <p class="pr-lead">LifeCost läuft aktuell kostenlos. Die Premium-Funktion ist vorbereitet, echte Zahlungen sind vorerst deaktiviert.</p>
 
     <div class="checkout-summary">
       <div>
@@ -1599,10 +1510,10 @@ function restoreLifeCostState(){
       <div class="checkout-lock">🔒</div>
     </div>
 
-    <label class="pr-label">E-Mail für deine Bestätigung</label>
-    <input id="checkoutEmail" class="pr-input" type="email" placeholder="name@beispiel.at">
+    <label class="pr-label" style="display:none">E-Mail</label>
+    <input id="checkoutEmail" class="pr-input" type="email" style="display:none" placeholder="name@beispiel.at">
 
-    <label class="checkout-check">
+    <label class="checkout-check" style="display:none">
       <input id="checkoutTerms" type="checkbox">
       <span>Ich bestätige, dass ich LifeCost Premium einmalig für 4,90 € erwerben möchte.</span>
     </label>
@@ -1610,11 +1521,11 @@ function restoreLifeCostState(){
     <div id="checkoutError" class="checkout-error" style="display:none"></div>
 
     <div class="pr-actions">
-      <button onclick="startTestCheckout()">Jetzt für 4,90 € freischalten</button>
+      <button type="button" disabled style="opacity:.55;cursor:not-allowed">Zahlung derzeit deaktiviert</button>
       <button class="secondary" onclick="closeCheckout()">Abbrechen</button>
     </div>
 
-    <small>Sichere Zahlung über Stripe.</small>
+    <small>LifeCost läuft aktuell kostenlos.</small>
   </div>
 </div>
 
@@ -1653,58 +1564,12 @@ function restoreLifeCostState(){
   </div>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', async function () {
-  restoreLifeCostState();
-
-  const params = new URLSearchParams(window.location.search);
-  const checkoutState = params.get('checkout');
-
-  if (checkoutState === 'cancel') {
-    history.replaceState(null, '', window.location.pathname);
-    return;
+document.addEventListener('DOMContentLoaded', function(){
+  const params=new URLSearchParams(window.location.search);
+  if(params.has('checkout') || params.has('session_id')){
+    history.replaceState(null,'',window.location.pathname);
   }
-
-  if (checkoutState !== 'success') {
-    return;
-  }
-
-  const sessionId = params.get('session_id');
-
-  if (!sessionId) {
-    alert('Die Zahlung war erfolgreich, aber die Stripe-Session-ID fehlt. Bitte den Checkout-Worker prüfen.');
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      'https://lifecost-stripe-checkou.c669dd4zby.workers.dev/verify-session?session_id='
-      + encodeURIComponent(sessionId),
-      { cache: 'no-store' }
-    );
-
-    const data = await response.json();
-
-    if (response.ok && data.paid === true) {
-      localStorage.setItem('lifecost_premium', 'true');
-      updatePremiumUI();
-
-      history.replaceState(null, '', window.location.pathname);
-
-      const s = document.getElementById('checkoutSuccessModal');
-      if (s) {
-        s.classList.add('open');
-        s.setAttribute('aria-hidden', 'false');
-      } else {
-        openPremiumReport();
-      }
-    } else {
-      alert('Stripe hat die Zahlung nicht als vollständig bezahlt bestätigt.');
-      console.error('Stripe verify response:', data);
-    }
-  } catch (error) {
-    alert('Die Zahlungsbestätigung konnte nicht geprüft werden.');
-    console.error(error);
-  }
+  if(typeof updatePremiumUI==='function') updatePremiumUI();
 });
 </script>
 <!-- Cloudflare Web Analytics -->
