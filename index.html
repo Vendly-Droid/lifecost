@@ -674,10 +674,31 @@ td.expensive{background:#fff0ed!important;color:#a63d36}
   font-size:12px;font-weight:700;
 }
 
+
+.lang-switch{
+  display:inline-flex;align-items:center;gap:3px;padding:3px;
+  border:1px solid #ddd7cd;border-radius:999px;background:#fffdf8;
+}
+.lang-switch button{
+  padding:6px 9px!important;border-radius:999px!important;
+  background:transparent!important;color:#667681!important;
+  box-shadow:none!important;border:0!important;font-size:11px!important;
+}
+.lang-switch button.active{
+  background:#18324f!important;color:#fff!important;
+}
+@media(max-width:850px){
+  .header-tools{width:100%;justify-content:flex-start!important}
+}
+
 </style></head><body>
 <header>
 <div class="brand"><div class="logo">L</div><div><h1>LifeCost</h1><div class="sub">Deine großen Entscheidungen. Klar gerechnet.</div></div></div>
-<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+<div class="header-tools" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+  <div class="lang-switch" aria-label="Language">
+    <button id="langDE" type="button" onclick="setLifeCostLanguage('de')">DE</button>
+    <button id="langEN" type="button" onclick="setLifeCostLanguage('en')">EN</button>
+  </div>
   <div id="premiumStatusBadge" class="premium-status free">FREE</div>
   <div class="sub">FINANCIAL DECISION DASHBOARD</div>
 </div>
@@ -1572,6 +1593,112 @@ document.addEventListener('DOMContentLoaded', function(){
   if(typeof updatePremiumUI==='function') updatePremiumUI();
 });
 </script>
+
+<script>
+(function(){
+  const DE_EN = {"Deine großen Entscheidungen. Klar gerechnet.": "Your big decisions. Clearly calculated.", "LIFECOST · KOSTENLOS STARTEN": "LIFECOST · START FOR FREE", "Große Entscheidungen.": "Big decisions.", "Klar gerechnet.": "Clearly calculated.", "Vergleiche Auto, Immobilienkauf, Mietwohnung, PV-Anlage oder Wohnmobil mit deinen eigenen Zahlen. LifeCost zeigt dir verständlich, wo dein Geld langfristig bleibt.": "Compare a car, home purchase, rental apartment, solar system or motorhome using your own numbers. LifeCost clearly shows where your money goes over the long term.", "Jetzt kostenlos vergleichen": "Compare for free now", "Keine Anmeldung · Sofortiges Ergebnis": "No sign-up · Instant result", "✓ Transparente Berechnung": "✓ Transparent calculations", "✓ Eigene Annahmen": "✓ Your own assumptions", "✓ Premium-Report optional": "✓ Optional premium report", "WAS MÖCHTEST DU VERGLEICHEN?": "WHAT WOULD YOU LIKE TO COMPARE?", "Wähle deinen Kostencheck": "Choose your cost comparison", "🚗 Autos": "🚗 Cars", "🏠 Haus & Wohnung kaufen": "🏠 Buy a house or apartment", "🏢 Wohnung mieten": "🏢 Rent an apartment", "☀️ PV-Anlagen": "☀️ Solar systems", "🚐 Wohnmobile": "🚐 Motorhomes", "DEIN PERSÖNLICHER KOSTENCHECK": "YOUR PERSONAL COST CHECK", "Der Kaufpreis ist nur ein Teil der Wahrheit.": "The purchase price is only part of the story.", "Finde heraus, welches deiner beiden Autos dich langfristig wirklich weniger kostet. LifeCost macht versteckte Kostentreiber sichtbar und übersetzt sie in eine klare Entscheidung.": "Find out which of your two cars really costs less in the long run. LifeCost reveals hidden cost drivers and turns them into a clear decision.", "✓ Keine Anmeldung": "✓ No sign-up", "✓ Deine eigenen Zahlen": "✓ Your own numbers", "✓ Ergebnis sofort sichtbar": "✓ Instant result", "Autos eintragen": "Enter cars", "Kosten vergleichen": "Compare costs", "Bessere Wahl sehen": "See the better choice", "Auto-Vergleich": "Car comparison", "MODELL": "MODEL", "Langzeitkosten": "Long-term costs", "Live-Berechnung": "Live calculation", "RISIKO": "RISK", "Kostenfalle vermeiden": "Avoid cost traps", "Dein Vergleich aktualisiert sich automatisch, sobald du Werte eingibst.": "Your comparison updates automatically as soon as you enter values.", "🏆 BESTE WAHL": "🏆 BEST CHOICE", "Noch offen": "Not yet determined", "Werte eingeben": "Enter values", "↓ WENIGER PRO MONAT": "↓ LESS PER MONTH", "gegenüber der teureren Option": "compared with the more expensive option", "+ GESAMTERSPARNIS": "+ TOTAL SAVINGS", "über deine geplante Haltedauer": "over your planned ownership period", "Deine Autos": "Your cars", "Du brauchst keine perfekten Zahlen. Starte mit dem, was du weißt.": "You do not need perfect numbers. Start with what you know.", "★ Premium-Report mit aktuellen Daten erstellen": "★ Create premium report with current data", "★ Premium bald verfügbar": "★ Premium coming soon", "Zurücksetzen": "Reset", "Auto A benennen": "Name Car A", "Was kostet das Auto? (€)": "What does the car cost? (€)", "Wie viele Jahre möchtest du es behalten?": "How many years do you plan to keep it?", "Für wie viel kannst du es später ungefähr verkaufen? (€)": "About how much could you sell it for later? (€)", "Versicherung pro Monat (€)": "Insurance per month (€)", "Sprit / Strom pro Monat (€)": "Fuel / electricity per month (€)", "Service & Reparaturen pro Jahr (€)": "Service & repairs per year (€)", "Optional: weitere Kosten ▼": "Optional: additional costs ▼", "Optionale Kosten ausblenden ▲": "Hide optional costs ▲", "Anzahlung (€)": "Down payment (€)", "Kreditzinsen pro Jahr (%)": "Loan interest per year (%)", "Steuer pro Jahr (€)": "Tax per year (€)", "Andere Kosten pro Monat (€)": "Other costs per month (€)", "Kilometer pro Jahr": "Kilometres per year", "Auto B benennen": "Name Car B", "Marktübersicht": "Overview", "Deine Zahlen werden in eine klare finanzielle Entscheidung übersetzt.": "Your numbers are turned into a clear financial decision.", "Auto A kostet dich ungefähr pro Monat": "Car A costs you approximately per month", "Auto B kostet dich ungefähr pro Monat": "Car B costs you approximately per month", "Gesamtkosten: 0,00 €": "Total cost: €0.00", "Trage die Werte ein und klicke auf „Kosten vergleichen“.": "Enter your values and click “Compare costs”.", "DEIN VORTEIL": "YOUR ADVANTAGE", "Sieh nicht nur, was günstiger ist.": "See more than just what is cheaper.", "LifeCost zeigt dir auch, warum.": "LifeCost also shows you why.", "DEINE KONTROLLE": "YOUR CONTROL", "Ändere jeden Wert jederzeit.": "Change any value at any time.", "Du siehst sofort, wie sich deine Entscheidung verändert.": "See instantly how your decision changes.", "Kennzahlen": "Key figures", "Auto A / Jahr": "Car A / year", "Auto B / Jahr": "Car B / year", "Auto A Wertverlust": "Car A depreciation", "Auto B Wertverlust": "Car B depreciation", "Kostenentwicklung & Vergleich": "Cost development & comparison", "Entdecke, wo dein Geld wirklich hingeht und welche Kosten den Unterschied machen.": "Discover where your money really goes and which costs make the difference.", "Kosten-Chart": "Cost chart", "Vergleiche die wichtigsten Kosten direkt. Grün zeigt dir den günstigeren Wert.": "Compare the most important costs directly. Green shows the cheaper value.", "Alle Details anzeigen ▼": "Show all details ▼", "Details ausblenden ▲": "Hide details ▲", "Alle Kosten im Detail": "All costs in detail", "Eine Entscheidung auf Basis deiner Zahlen.": "A decision based on your numbers.", "Keine versteckten Empfehlungen. Kein Auto wird bevorzugt. LifeCost vergleicht ausschließlich die Angaben, die du selbst eingibst.": "No hidden recommendations. No car is favoured. LifeCost compares only the information you enter.", "Transparent gerechnet": "Transparent calculations", "Jeder Wert veränderbar": "Every value adjustable", "Ergebnis sofort neu berechnet": "Results recalculate instantly", "Hinweis: LifeCost liefert Planungswerte auf Basis deiner Eingaben. Finanzierungskosten werden vereinfacht berechnet.": "Note: LifeCost provides planning estimates based on your inputs. Financing costs are calculated using a simplified model.", "Vergleiche Haus oder Eigentumswohnung und sieh, welche Kaufoption dich langfristig wirklich weniger kostet.": "Compare a house or apartment and see which purchase option really costs less in the long run.", "Immobilien eintragen": "Enter properties", "Immobilien-Kauf": "Property purchase", "FOKUS": "FOCUS", "Vermögen & Kosten": "Assets & costs", "Deine zwei Kaufoptionen": "Your two purchase options", "Vergleiche Haus oder Wohnung mit deinen eigenen Zahlen.": "Compare a house or apartment using your own numbers.", "Option A benennen": "Name Option A", "Kaufpreis (€)": "Purchase price (€)", "Geplante Haltedauer (Jahre)": "Planned holding period (years)", "Geschätzter Wert am Ende (€)": "Estimated value at the end (€)", "Eigenkapital (€)": "Equity / cash contribution (€)", "Kreditzins pro Jahr (%)": "Loan interest per year (%)", "Betriebskosten pro Monat (€)": "Operating costs per month (€)", "Instandhaltung pro Jahr (€)": "Maintenance per year (€)", "Sonstige Kosten pro Jahr (€)": "Other costs per year (€)", "Option B benennen": "Name Option B", "Dein Ergebnis": "Your result", "Die wichtigsten Kennzahlen auf einen Blick.": "The most important figures at a glance.", "🏆 BESTE FINANZIELLE WAHL": "🏆 BEST FINANCIAL CHOICE", "KOSTENVORTEIL / MONAT": "COST ADVANTAGE / MONTH", "Vergleich": "Comparison", "+ GESAMTVORTEIL": "+ TOTAL ADVANTAGE", "über den Betrachtungszeitraum": "over the comparison period", "Vergleich als Diagramm": "Comparison chart", "Keine versteckten Empfehlungen. LifeCost vergleicht ausschließlich deine Eingaben und macht die Rechnung nachvollziehbar.": "No hidden recommendations. LifeCost compares only your inputs and makes the calculation transparent.", "Welche Mietwohnung lässt dir langfristig mehr Geld?": "Which rental apartment leaves you with more money in the long run?", "Vergleiche zwei Mietwohnungen mit Miete, Betriebskosten, Kaution, möglicher Mietsteigerung und weiteren laufenden Kosten.": "Compare two rental apartments including rent, operating costs, deposit, possible rent increases and other ongoing costs.", "Wohnungen eintragen": "Enter apartments", "Mietwohnungs-Vergleich": "Rental apartment comparison", "Wohnkosten": "Housing costs", "Monatliche Belastung": "Monthly cost", "über deine geplante Mietdauer": "over your planned rental period", "Deine Wohnungen": "Your apartments", "Trage ein, was du über beide Mietwohnungen weißt.": "Enter what you know about both rental apartments.", "Wohnung A benennen": "Name Apartment A", "Monatliche Miete inkl. Betriebskosten (€)": "Monthly rent incl. operating costs (€)", "Wie viele Jahre möchtest du dort wohnen?": "How many years do you plan to live there?", "Einmalkosten / Umzug / Provision (€)": "One-off costs / moving / commission (€)", "Erwartete Mietsteigerung pro Jahr (%)": "Expected rent increase per year (%)", "Parkplatz / Garage pro Monat (€)": "Parking / garage per month (€)", "Sonstige Wohnkosten pro Monat (€)": "Other housing costs per month (€)", "Wohnung B benennen": "Name Apartment B", "Welche Wohnung kostet dich langfristig weniger?": "Which apartment costs you less in the long run?", "Woher kommt der Unterschied?": "Where does the difference come from?", "Keine versteckten Empfehlungen. LifeCost vergleicht ausschließlich die Angaben, die du selbst eingibst.": "No hidden recommendations. LifeCost compares only the information you enter.", "Nicht die billigste PV-Anlage ist automatisch die beste.": "The cheapest solar system is not automatically the best.", "Vergleiche zwei PV-Anlagen und sieh, welche dir über die Jahre den größeren finanziellen Vorteil bringt.": "Compare two solar systems and see which gives you the greater financial benefit over the years.", "Anlagen eintragen": "Enter systems", "Ertrag vergleichen": "Compare returns", "PV-Vergleich": "Solar comparison", "Langzeitertrag": "Long-term return", "Amortisation": "Payback", "Deine zwei Optionen": "Your two options", "Trage die Werte ein, die du kennst. Du kannst alles jederzeit ändern.": "Enter the values you know. You can change anything at any time.", "Anschaffung inkl. Montage (€)": "Purchase incl. installation (€)", "Betrachtungszeitraum (Jahre)": "Comparison period (years)", "Ertrag pro Jahr (kWh)": "Annual yield (kWh)", "Eigenverbrauch (%)": "Self-consumption (%)", "Strompreis (€ / kWh)": "Electricity price (€ / kWh)", "Einspeisevergütung (€ / kWh)": "Feed-in tariff (€ / kWh)", "Wartung pro Jahr (€)": "Maintenance per year (€)", "Leistungsverlust pro Jahr (%)": "Performance loss per year (%)", "VORTEIL / JAHR": "ADVANTAGE / YEAR", "Der Kaufpreis sagt nicht, was dein Wohnmobil wirklich kostet.": "The purchase price does not tell you what your motorhome really costs.", "Vergleiche zwei Wohnmobile und finde heraus, welches dir langfristig mehr Budget für deine Reisen lässt.": "Compare two motorhomes and find out which leaves you with more travel budget in the long run.", "Wohnmobile eintragen": "Enter motorhomes", "Wohnmobil-Vergleich": "Motorhome comparison", "Mehr Reisebudget": "More travel budget", "Geschätzter Wiederverkaufswert (€)": "Estimated resale value (€)", "Versicherung pro Jahr (€)": "Insurance per year (€)", "Steuer / Gebühren pro Jahr (€)": "Tax / fees per year (€)", "Sprit pro Monat (€)": "Fuel per month (€)", "Stellplatz / Sonstiges pro Jahr (€)": "Storage / other costs per year (€)", "MEHR ALS NUR EINE ZAHL": "MORE THAN JUST A NUMBER", "Deine Entscheidung zum Mitnehmen.": "Your decision, ready to take with you.", "Der kostenlose Vergleich zeigt dir das Ergebnis. Der Premium-Report macht daraus eine strukturierte Unterlage, die du speichern, ausdrucken oder gemeinsam mit anderen durchgehen kannst.": "The free comparison shows you the result. The premium report turns it into a structured document you can save, print or review with others.", "Klare Zusammenfassung": "Clear summary", "Gewinner, Kostenvorteil und wichtigste Kennzahlen auf einen Blick.": "Winner, cost advantage and key figures at a glance.", "Kostentreiber verstehen": "Understand cost drivers", "Sieh, welche Positionen den Unterschied zwischen deinen Optionen verursachen.": "See which items create the difference between your options.", "Entscheidung testen": "Stress-test your decision", "Szenario-Check und Prüfliste helfen dir, unsichere Annahmen zu hinterfragen.": "Scenario checks and a checklist help you challenge uncertain assumptions.", "Premium kommt später · 4,90 €": "Premium coming later · €4.90", "Derzeit kostenlos · Premium später verfügbar": "Currently free · Premium coming later", "Premium kommt später": "Premium coming later", "LifeCost läuft aktuell kostenlos. Die Premium-Funktion ist vorbereitet, echte Zahlungen sind vorerst deaktiviert.": "LifeCost is currently free. The premium feature is prepared, but real payments are temporarily disabled.", "PREMIUM-REPORT": "PREMIUM REPORT", "einmalig · kein Abo": "one-time payment · no subscription", "E-Mail": "Email", "Ich bestätige, dass ich LifeCost Premium einmalig für 4,90 € erwerben möchte.": "I confirm that I want to purchase LifeCost Premium once for €4.90.", "Zahlung derzeit deaktiviert": "Payment currently disabled", "Abbrechen": "Cancel", "LifeCost läuft aktuell kostenlos.": "LifeCost is currently free.", "ZAHLUNG ERFOLGREICH": "PAYMENT SUCCESSFUL", "Premium ist freigeschaltet.": "Premium is unlocked.", "Deine Zahlung wurde bestätigt. Dein Premium-Report ist freigeschaltet.": "Your payment has been confirmed. Your premium report is unlocked.", "Premium-Report mit aktuellen Daten erstellen": "Create premium report with current data", "Deine Entscheidung als echte Unterlage.": "Turn your decision into a real document.", "Der Premium-Report macht aus deinem Vergleich eine strukturierte Entscheidungsunterlage: Ergebnis, Kennzahlen, Annahmen, Kostentreiber, Szenario-Check und klare nächste Prüfpunkte. Nach bestätigter Zahlung kannst du deinen vollständigen Premium-Report erstellen und als PDF speichern.": "The premium report turns your comparison into a structured decision document: result, key figures, assumptions, cost drivers, scenario checks and clear next steps. After confirmed payment, you can create the full premium report and save it as a PDF.", "✓ Gewinner & Kostenvorteil": "✓ Winner & cost advantage", "✓ Eingaben und Annahmen": "✓ Inputs and assumptions", "✓ Kostenvergleich": "✓ Cost comparison", "✓ Entscheidungshinweise": "✓ Decision guidance", "✓ Szenario-Check": "✓ Scenario check", "✓ Persönliche Prüfliste": "✓ Personal checklist", "Optionaler Titel für deinen Report": "Optional title for your report", "PREMIUM-PREIS": "PREMIUM PRICE", "Premium ist aktiv. Ändere deine Eingaben jederzeit und erstelle den Report anschließend neu.": "Premium is active. Change your inputs at any time and create the report again with the latest data.", "Bitte Daten eingeben": "Please enter data", "Bitte bei beiden Autos angeben, wie viele Jahre du sie behalten möchtest.": "Please enter how many years you plan to keep both cars.", "Beide Autos liegen bei den Gesamtkosten praktisch gleichauf.": "Both cars are virtually tied on total cost.", "Gleichauf": "Tied", "Kein klarer Kostenvorteil": "No clear cost advantage", "▲ Finanziell im Vorteil": "▲ Financially ahead", "Bitte Zeitraum für beide Optionen eingeben": "Please enter a time period for both options", "▲ Höherer finanzieller Ertrag": "▲ Higher financial return", "Gesamtkosten": "Total costs", "Wertverlust": "Depreciation", "Laufende Kosten": "Ongoing costs", "Miete & laufende Kosten": "Rent & ongoing costs", "Einmalkosten": "One-off costs", "Gesamtnutzen": "Total benefit", "Anschaffung": "Purchase", "Wartung": "Maintenance", "Pro Monat": "Per month", "Pro Jahr": "Per year", "Kauf / Wertverlust": "Purchase / depreciation", "Versicherung": "Insurance", "Sprit / Strom": "Fuel / electricity", "Service / Reparaturen": "Service / repairs", "Steuer": "Tax", "Andere Kosten": "Other costs", "z. B. VW Golf": "e.g. VW Golf", "z. B. BMW 3er": "e.g. BMW 3 Series", "z. B. Variante A": "e.g. Option A", "z. B. Variante B": "e.g. Option B", "z. B. Wohnung Zentrum": "e.g. City-centre apartment", "z. B. Wohnung Stadtrand": "e.g. Suburban apartment", "name@beispiel.at": "name@example.com", "z. B. Golf vs. BMW – meine Entscheidung": "e.g. Golf vs BMW – my decision"};
+  const EN_DE = Object.fromEntries(Object.entries(DE_EN).map(([de,en])=>[en,de]));
+  let currentLang = 'de';
+  let applying = false;
+
+  function translatePatternsDEEN(s){
+    let m;
+    if((m=s.match(/^Gesamtkosten:\s*(.+)$/))) return 'Total cost: '+m[1];
+    if((m=s.match(/^🏆 (.+) ist nach deinen Angaben die finanziell stärkere Wahl\. Dein Kostenvorteil: ungefähr (.+) pro Monat und (.+) insgesamt\.$/)))
+      return '🏆 '+m[1]+' is the financially stronger choice based on your inputs. Your cost advantage: approximately '+m[2]+' per month and '+m[3]+' in total.';
+    if((m=s.match(/^(.+) kostet dich ungefähr pro Monat$/))) return m[1]+' costs you approximately per month';
+    return s;
+  }
+
+  function translatePatternsENDE(s){
+    let m;
+    if((m=s.match(/^Total cost:\s*(.+)$/))) return 'Gesamtkosten: '+m[1];
+    if((m=s.match(/^🏆 (.+) is the financially stronger choice based on your inputs\. Your cost advantage: approximately (.+) per month and (.+) in total\.$/)))
+      return '🏆 '+m[1]+' ist nach deinen Angaben die finanziell stärkere Wahl. Dein Kostenvorteil: ungefähr '+m[2]+' pro Monat und '+m[3]+' insgesamt.';
+    if((m=s.match(/^(.+) costs you approximately per month$/))) return m[1]+' kostet dich ungefähr pro Monat';
+    return s;
+  }
+
+  function trText(value, lang){
+    if(!value) return value;
+    const leading = value.match(/^\s*/)[0], trailing = value.match(/\s*$/)[0];
+    const core = value.trim();
+    if(!core) return value;
+    let out = core;
+    if(lang==='en'){
+      out = DE_EN[core] || translatePatternsDEEN(core);
+    }else{
+      out = EN_DE[core] || translatePatternsENDE(core);
+    }
+    return leading + out + trailing;
+  }
+
+  function translateNode(node, lang){
+    if(node.nodeType===Node.TEXT_NODE){
+      const p=node.parentElement;
+      if(!p || ['SCRIPT','STYLE','NOSCRIPT'].includes(p.tagName)) return;
+      const v=trText(node.nodeValue,lang);
+      if(v!==node.nodeValue) node.nodeValue=v;
+      return;
+    }
+    if(node.nodeType!==Node.ELEMENT_NODE) return;
+    if(['SCRIPT','STYLE','NOSCRIPT'].includes(node.tagName)) return;
+
+    ['placeholder','aria-label','title'].forEach(attr=>{
+      if(node.hasAttribute && node.hasAttribute(attr)){
+        const old=node.getAttribute(attr);
+        const v=trText(old,lang);
+        if(v!==old) node.setAttribute(attr,v);
+      }
+    });
+
+    node.childNodes.forEach(ch=>translateNode(ch,lang));
+  }
+
+  function updateButtons(){
+    const de=document.getElementById('langDE');
+    const en=document.getElementById('langEN');
+    if(de) de.classList.toggle('active',currentLang==='de');
+    if(en) en.classList.toggle('active',currentLang==='en');
+  }
+
+  window.setLifeCostLanguage=function(lang){
+    currentLang = lang==='en' ? 'en' : 'de';
+    localStorage.setItem('lifecost_language',currentLang);
+    applying=true;
+    document.documentElement.lang=currentLang;
+    document.title=currentLang==='en'
+      ? 'LifeCost – Big decisions, clearly calculated'
+      : 'LifeCost – Große Entscheidungen klar gerechnet';
+    translateNode(document.body,currentLang);
+    updateButtons();
+    applying=false;
+  };
+
+  const observer=new MutationObserver(mutations=>{
+    if(applying) return;
+    if(currentLang!=='en') return;
+    applying=true;
+    mutations.forEach(m=>{
+      if(m.type==='characterData') translateNode(m.target,'en');
+      if(m.type==='childList') m.addedNodes.forEach(n=>translateNode(n,'en'));
+      if(m.type==='attributes') translateNode(m.target,'en');
+    });
+    applying=false;
+  });
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    observer.observe(document.body,{
+      subtree:true,childList:true,characterData:true,attributes:true,
+      attributeFilter:['placeholder','aria-label','title']
+    });
+    const saved=localStorage.getItem('lifecost_language');
+    const detected=(navigator.language||'de').toLowerCase().startsWith('de')?'de':'en';
+    setLifeCostLanguage(saved || detected);
+  });
+})();
+</script>
+
 <!-- Cloudflare Web Analytics -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "5a99c670c5334eb2a09e32b9ed0d0d29"}'></script>
 <!-- End Cloudflare Web Analytics -->
